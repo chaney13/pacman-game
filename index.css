@@ -1,0 +1,272 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background: black;
+    font-family: 'Press Start 2P', cursive;
+    height: 1vh;
+}
+
+button {
+    padding: 10px 25px;
+    transform: scale(1);
+    transition: transform 250ms;
+    cursor: pointer;
+}
+
+button:hover,
+button:focus {
+    transform: scale(1.2);
+}
+
+.container {
+    margin: 0 auto;
+    /* border: red 2px solid; */
+    padding: 0px;
+    width: 440px;
+}
+
+.cols {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-col {
+    /* border: lime 2px solid; */
+    margin-left: 22px;
+}
+.right-col {
+    /* border: hotpink 2px solid; */
+    margin-right: 22px;
+}
+
+h1 {
+    padding-top: 20px;
+    margin-bottom: 0;
+    font-size: 32px;
+    color: yellow;
+}
+
+h3 {
+    color: white;
+    font-size: 20px;
+}
+
+p {
+    color: white;
+    margin: 0;
+    font-size: 20px;
+}
+
+.top {
+    margin-top: 35px;
+}
+
+.cols {
+    display: flex;
+    flex-direction: row;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    width: 420px;
+    height: 420px;
+    /* border: solid navy; */
+    background: black;
+    margin: auto;
+}
+
+/* .box-loss {
+    display: flex;
+    flex-wrap: wrap;
+    width: 420px;
+    height: 420px;
+    background: url("https://media1.giphy.com/media/hkqefnFjn2MWVl6xvq/giphy.gif?cid=ecf05e47e1q70lvjfkp0fycje1jz3xev0gpje69jf3zc8jdv&rid=giphy.gif&ct=g");
+    margin: auto;
+} */
+
+/* .box-win {
+    display: flex;
+    flex-wrap: wrap;
+    width: 420px;
+    height: 420px;
+    background: url("https://media0.giphy.com/media/go3pCPP4899Jd3xb4p/giphy.gif?cid=ecf05e47mweyjpq4pcjuijko8c2n8yqcw5tiacckvy4a0o76&rid=giphy.gif&ct=g");
+    margin: auto;
+} */
+
+.grid div {
+    width: 15px;
+    height: 15px;   
+}
+
+.pac-dot {
+    background-color: peachpuff;
+    border: 5px solid black;
+    box-sizing: border-box;
+}
+
+.ghost-lair {
+    background-color: black;
+}
+
+.wall {
+    background-color: black; /* navy*/
+    box-sizing: border-box;
+
+    /* background-color: black;
+    box-sizing: border-box;
+    border: 3px solid navy; */
+}
+
+.border-top {
+    border-top: 3px solid navy;
+}
+.border-right {
+    border-right: 3px solid navy;
+}
+.border-bottom {
+    border-bottom: 3px solid navy;
+}
+.border-left {
+    border-left: 3px solid navy;
+}
+.border-top-right {
+    border-top: 3px solid navy;
+    border-right: 3px solid navy;
+}
+.border-bottom-right {
+    border-bottom: 3px solid navy;
+    border-right: 3px solid navy;
+}
+.border-top-left {
+    border-top: 3px solid navy;
+    border-left: 3px solid navy;
+}
+.border-bottom-left {
+    border-bottom: 3px solid navy;
+    border-left: 3px solid navy;
+}
+.border-top-bottom {
+    border-top: 3px solid navy;
+    border-bottom: 3px solid navy;
+    padding: 0;
+}
+.border-left-right {
+    border-left: 3px solid navy;
+    border-right: 3px solid navy;
+}
+.border-top-right-bottom {
+    border-top: 3px solid navy;
+    border-right: 3px solid navy;
+    border-bottom: 3px solid navy;
+}
+.border-right-bottom-left {
+    border-right: 3px solid navy;
+    border-bottom: 3px solid navy;
+    border-left: 3px solid navy;
+}
+.border-bottom-left-top {
+    border-bottom: 3px solid navy;
+    border-left: 3px solid navy;
+    border-top: 3px solid navy;
+}
+.border-left-top-right {
+    border-left: 3px solid navy;
+    border-top: 3px solid navy;
+    border-right: 3px solid navy;
+}
+
+
+
+.power-pellet {
+    background-color: peachpuff;
+    border-radius: 7.5px;
+    border: none;
+    /* border: 2.75px solid black;
+    box-sizing: border-box; */
+
+    
+    /* border-radius: 7.5px; */
+}
+
+.empty {
+    background-color: black;
+}
+
+.pacman {
+    background-color: yellow;
+    border-radius: 7.5px;
+    border: none;
+}
+
+.blinky {
+    background-color: red;
+    border-radius: 80% 80% 0% 0%;
+    border: none;
+}
+
+.pinky {
+    background-color: pink;
+    border-radius: 80% 80% 0% 0%;
+    border: none;
+}
+
+.inky {
+    background-color: aqua;
+    border-radius: 80% 80% 0% 0%;
+    border: none;
+}
+
+.clyde {
+    background-color: orange;
+    border-radius: 80% 80% 0% 0%;
+    border: none;
+}
+
+.scared-ghost {
+    background-color: blue;
+    border: none;
+}
+
+.active {
+    display: block;
+    margin: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+#countdown-timer1,
+#countdown-timer2 {
+    color: white;
+}
+
+.countdown-timer {
+    color: white;
+}
+
+.fruit {
+    background-color: lime;
+    border-radius: 7.5px;
+    border: none;
+}
+
+#box-loss {
+    display: flex;
+    flex-wrap: wrap;
+    width: 420px;
+    height: 420px;
+    background: url("https://media1.giphy.com/media/hkqefnFjn2MWVl6xvq/giphy.gif?cid=ecf05e47e1q70lvjfkp0fycje1jz3xev0gpje69jf3zc8jdv&rid=giphy.gif&ct=g");
+    margin: auto;
+}
+
+#box-win {
+    display: flex;
+    flex-wrap: wrap;
+    width: 420px;
+    height: 420px;
+    background: url("https://media0.giphy.com/media/go3pCPP4899Jd3xb4p/giphy.gif?cid=ecf05e47mweyjpq4pcjuijko8c2n8yqcw5tiacckvy4a0o76&rid=giphy.gif&ct=g");
+    margin: auto;
+}
