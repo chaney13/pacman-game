@@ -253,6 +253,15 @@ p {
     border: none;
 }
 
+#box-initial {
+    display: flex;
+    flex-wrap: wrap;
+    width: 420px;
+    height: 420px;
+    background: url("https://media2.giphy.com/media/jxJjBMvqEvMSA/giphy.gif?cid=ecf05e47e63bs3xaz0uslv2g8yc3cxr5noaq6v1r05vxno5h&rid=giphy.gif&ct=g");
+    margin: auto;
+}
+
 #box-loss {
     display: flex;
     flex-wrap: wrap;
