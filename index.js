@@ -1,6 +1,8 @@
 // Works the best, slight pause between speed ups
-// Issue when 2 powerpellets are eaten - fixed with adjusting powerpellet distances and timer
-// randomly timed fruit in middle to reset grid (currently spawns every 45s)
+// Issue when 2 powerpellets are eaten - fixed
+// Timed fruit in middle to reset grid
+// Timed fruit random location for bonus points
+
 const width = 28
 let grid = document.querySelector('.grid')
 const scoreDisplay = document.getElementById('score')
@@ -8,7 +10,7 @@ const highscoreDisplay = document.getElementById('highscore')
 const messageDisplay = document.getElementById('message')
 const startBtn = document.getElementById('start-btn')
 const restartBtn = document.getElementById('restart-btn')
-const blinkyStartSpeed = 200
+const blinkyStartSpeed = 250
 const pinkyStartSpeed = 400
 const inkyStartSpeed = 300
 const clydeStartSpeed = 500
@@ -21,25 +23,37 @@ let restart = 0
 let squares = []
 let score = 0
 let highscore = 0
+let pacmanDirection = 0
 let direction = 0
-let intervalTime = 290 //pacman speed
-let timer = setInterval(move, intervalTime)
+let pacmanSpeed = 290 //pacman normal speed
+const pacmanFastSpeed = 215 //pacman speed with powerpellet
+let timer = setInterval(move, pacmanSpeed)
 let prevDirection = 0
 let gameOver = 0
+let winningPoints = 3000 // 3000 points awarded if you win
+let powerEaten = 0
 
 let constantTimer = 0
 let constantIncrease = 5000 // every 5 sec
-let speedChange = 0.90
+let speedChange = 0.95
 
 // let alreadyEaten = 0
 
 let unScareTimer = 7000 // 7 sec
 
-// let timeleft = 10
+let timeleft = -2
+let timeleft2 = -2
+let downloadTimer = 0
+let timeout = 0
 let countdownTimer = document.getElementById("countdown-timer")
 let countdownTimer2 = document.getElementById("countdown-timer2")
 
-let fruitTimer = 45000 // generate fruit every 45s
+let fruitBoard = 0
+let fruitBoardTimer = 45000 // generate fruit every 45s
+let fruitBoardPoints = 50
+let fruitRandom = 0
+let fruitRandomTimer = 20000 // generate fruit every 20s
+let fruitRandomPoints = 100
 
 let savedGrid = ''
 let savedSquares = []
@@ -48,8 +62,6 @@ boxLoss.style.display = "none"
 let boxWin = document.getElementById('box-win')
 boxWin.style.display = "none"
 // let boxInitial = document.getElementById('box-initial')
-
-let fruitPoints = 50
 
 let pacmanPrevIndex = 0
 let ghostPoints = 0
@@ -92,8 +104,8 @@ const layout = [
     7,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,8,
     5,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,5,
     5,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,5,
-    7,3,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,3,8,
-    7,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,8,
+    7,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,8,
+    7,3,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,3,8,
     7,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,8,
     7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,
     5,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,5
@@ -101,18 +113,20 @@ const layout = [
 
 function move() {
     if (start === 1) {
+        // console.log(pacmanDirection)
 
         if (
-            (squares[pacmanCurrentIndex + direction].classList.contains('wall') && direction == 1 && pacmanCurrentIndex != 391) ||
-            (squares[pacmanCurrentIndex + direction].classList.contains('wall') && direction == -1 && pacmanCurrentIndex != 364) ||
-            (squares[pacmanCurrentIndex + direction].classList.contains('wall') && direction == width) ||
-            (squares[pacmanCurrentIndex + direction].classList.contains('wall') && direction == -width) || 
-            (squares[pacmanCurrentIndex + direction].classList.contains('ghost-lair') && direction == 1) ||
-            (squares[pacmanCurrentIndex + direction].classList.contains('ghost-lair') && direction == -1) ||
-            (squares[pacmanCurrentIndex + direction].classList.contains('ghost-lair') && direction == width) ||
-            (squares[pacmanCurrentIndex + direction].classList.contains('ghost-lair') && direction == -width)
+            (squares[pacmanCurrentIndex + pacmanDirection].classList.contains('wall') && pacmanDirection == 1 && pacmanCurrentIndex != 391) ||
+            (squares[pacmanCurrentIndex + pacmanDirection].classList.contains('wall') && pacmanDirection == -1 && pacmanCurrentIndex != 364) ||
+            (squares[pacmanCurrentIndex + pacmanDirection].classList.contains('wall') && pacmanDirection == width) ||
+            (squares[pacmanCurrentIndex + pacmanDirection].classList.contains('wall') && pacmanDirection == -width) || 
+            (squares[pacmanCurrentIndex + pacmanDirection].classList.contains('ghost-lair') && pacmanDirection == 1) ||
+            (squares[pacmanCurrentIndex + pacmanDirection].classList.contains('ghost-lair') && pacmanDirection == -1) ||
+            (squares[pacmanCurrentIndex + pacmanDirection].classList.contains('ghost-lair') && pacmanDirection == width) ||
+            (squares[pacmanCurrentIndex + pacmanDirection].classList.contains('ghost-lair') && pacmanDirection == -width)
              ) {
-                direction = 0
+                pacmanDirection = 0
+                // console.log('Here')
                 clearInterval(timer)
 
         }
@@ -125,14 +139,14 @@ function move() {
             pacmanPrevIndex = pacmanCurrentIndex
         }
 
-        if (pacmanCurrentIndex == 391 && direction == 1) {
+        if (pacmanCurrentIndex == 391 && pacmanDirection == 1) {
             pacmanCurrentIndex = 364
         }
-        else if (pacmanCurrentIndex == 364 && direction == -1) {
+        else if (pacmanCurrentIndex == 364 && pacmanDirection == -1) {
             pacmanCurrentIndex = 391
         } 
         else {
-            pacmanCurrentIndex += direction
+            pacmanCurrentIndex += pacmanDirection
         }
 
         pacDotEaten()
@@ -140,26 +154,54 @@ function move() {
         ghostEaten()
         fruitEaten()
 
-        if (squares[pacmanCurrentIndex].classList.contains('empty')) {
-            squares[pacmanCurrentIndex].classList.remove('empty')
-            clearInterval(timer)
-            timer = setInterval(move, intervalTime)
+
+        if (powerEaten == 0) {
+            if (squares[pacmanCurrentIndex].classList.contains('empty')) {
+                squares[pacmanCurrentIndex].classList.remove('empty')
+                clearInterval(timer)
+                timer = setInterval(move, pacmanSpeed)
+            }
+            else if (squares[pacmanCurrentIndex].classList.contains('pac-dot')) {
+                squares[pacmanCurrentIndex].classList.remove('pac-dot')
+                clearInterval(timer)
+                timer = setInterval(move, pacmanSpeed)
+            }
+            else if (squares[pacmanCurrentIndex].classList.contains('power-pellet')) {
+                squares[pacmanCurrentIndex].classList.remove('power-pellet')
+                clearInterval(timer)
+                timer = setInterval(move, pacmanSpeed)
+            }
+            else if (squares[pacmanCurrentIndex].classList.contains('ghost-lair')) {
+                squares[pacmanCurrentIndex].classList.remove('ghost-lair')
+                clearInterval(timer)
+                timer = setInterval(move, pacmanSpeed)
+            }
         }
-        else if (squares[pacmanCurrentIndex].classList.contains('pac-dot')) {
-            squares[pacmanCurrentIndex].classList.remove('pac-dot')
-            clearInterval(timer)
-            timer = setInterval(move, intervalTime)
+        else {
+            if (squares[pacmanCurrentIndex].classList.contains('empty')) {
+                squares[pacmanCurrentIndex].classList.remove('empty')
+                clearInterval(timer)
+                timer = setInterval(move, pacmanFastSpeed)
+            }
+            else if (squares[pacmanCurrentIndex].classList.contains('pac-dot')) {
+                squares[pacmanCurrentIndex].classList.remove('pac-dot')
+                clearInterval(timer)
+                timer = setInterval(move, pacmanFastSpeed)
+            }
+            else if (squares[pacmanCurrentIndex].classList.contains('power-pellet')) {
+                squares[pacmanCurrentIndex].classList.remove('power-pellet')
+                clearInterval(timer)
+                timer = setInterval(move, pacmanFastSpeed)
+            }
+            else if (squares[pacmanCurrentIndex].classList.contains('ghost-lair')) {
+                squares[pacmanCurrentIndex].classList.remove('ghost-lair')
+                clearInterval(timer)
+                timer = setInterval(move, pacmanFastSpeed)
+            }
         }
-        else if (squares[pacmanCurrentIndex].classList.contains('power-pellet')) {
-            squares[pacmanCurrentIndex].classList.remove('power-pellet')
-            clearInterval(timer)
-            timer = setInterval(move, intervalTime)
-        }
-        else if (squares[pacmanCurrentIndex].classList.contains('ghost-lair')) {
-            squares[pacmanCurrentIndex].classList.remove('ghost-lair')
-            clearInterval(timer)
-            timer = setInterval(move, intervalTime)
-        }
+
+
+
         squares[pacmanCurrentIndex].classList.add('pacman')
         checkForWin()
         checkForGameOver()
@@ -282,35 +324,72 @@ function createBoard() {
 }
 createBoard()
 
-let fruitIndex = 489
-function makeFruit() {
-    fruit = setInterval(function() {
-        squares[fruitIndex].classList.remove('empty')
-        squares[fruitIndex].classList.add('fruit')
-    }, fruitTimer)
+let pelletArray = []
+let fruitRandomIndex = 0
+function makeFruitRandom() {
+    fruitRandom = setTimeout(function() {
+        pelletArray = []
+        for (let i = 0; i < squares.length; i++) {
+            if (squares[i].classList.contains('pac-dot')){
+                pelletArray.push(i)
+            }
+        }
+
+        fruitRandomIndex = pelletArray[Math.floor(Math.random() * pelletArray.length)]
+        squares[fruitRandomIndex].classList.remove('pac-dot')
+        squares[fruitRandomIndex].classList.add('fruit-random')
+    }, fruitRandomTimer)
+
+
+}
+
+let fruitBoardIndex = 489
+function makeFruitBoard() {
+    fruitBoard = setTimeout(function() {
+        squares[fruitBoardIndex].classList.remove('empty')
+        squares[fruitBoardIndex].classList.add('fruit-board')
+    }, fruitBoardTimer)
 }
 
 function fruitEaten() {
-    if (squares[pacmanCurrentIndex].classList.contains('fruit')) {
-        fruitPoints += 50
-        squares[pacmanCurrentIndex].classList.remove('fruit')
+    if (squares[pacmanCurrentIndex].classList.contains('fruit-board')) {
+        clearTimeout(fruitRandom)
+        squares[fruitRandomIndex].classList.remove('fruit-random')
+        squares[fruitRandomIndex].classList.add('pac-dot')
+        pelletArray = []
+
+        fruitBoardPoints += 50
+        squares[pacmanCurrentIndex].classList.remove('fruit-board')
         squares[pacmanCurrentIndex].classList.add('empty')
         grid.innerHTML = ''
         squares = []
         createBoard()
-        score += fruitPoints //100
+        score += fruitBoardPoints //100
         scoreDisplay.innerHTML = score
-        clearInterval(fruit)
-        makeFruit()
+        // clearInterval(fruitBoard)
+        makeFruitBoard()
+        makeFruitRandom()
+    }
+    else if (squares[pacmanCurrentIndex].classList.contains('fruit-random')) {
+        fruitRandomPoints += 100
+        squares[pacmanCurrentIndex].classList.remove('fruit-random')
+        squares[pacmanCurrentIndex].classList.add('empty')
+        // grid.innerHTML = ''
+        // squares = []
+        // createBoard()
+        pelletArray = []
+        score += fruitRandomPoints
+        scoreDisplay.innerHTML = score
+        // clearInterval(fruitRandom)
+        makeFruitRandom()
     }
 }
 
 startBtn.addEventListener('click', function() {
     start = 1
-    ghosts.forEach(ghost => startGhost(ghost))
-    document.addEventListener('keydown', control)
-    ghosts.forEach(ghost => speedUp(ghost))
-    // makeFruit()
+    // ghosts.forEach(ghost => startGhost(ghost))
+    // document.addEventListener('keydown', control)
+    // ghosts.forEach(ghost => speedUp(ghost))
     startBtn.classList.remove('active')
     startBtn.classList.add('hidden')
     restartBtn.classList.remove('hidden')
@@ -320,7 +399,6 @@ startBtn.addEventListener('click', function() {
     lastEvent = NaN
 
 
-
     messageDisplay.innerHTML = ""
     score = 0
     scoreDisplay.innerHTML = '00'
@@ -334,18 +412,21 @@ startBtn.addEventListener('click', function() {
         clearInterval(ghost.constantTimer)
         clearInterval(ghost.timerId)
     })
+    direction = -width
 
     for (let i = 0; i < ghostStartSpeeds.length; i++) {
         ghosts[i].speed = ghostStartSpeeds[i]
         // console.log('restarted speeds', ghosts[i].speed)
     }
-    makeFruit()
     // console.log('restarted')
 
     //remove old classes
     grid.innerHTML = ''
     squares = []
     createBoard()
+
+    makeFruitBoard()
+    makeFruitRandom()
 
     gameOver = 0
     start = 1
@@ -359,54 +440,128 @@ startBtn.addEventListener('click', function() {
 
     ghosts.forEach(ghost => startGhost(ghost))
 
-    ghosts.forEach(ghost => speedUp(ghost))
+    ghosts.forEach(ghost => speedUp(ghost, direction))
 
     document.addEventListener('keydown', control)
 })
 
-function speedUp(ghost) {
+function speedUp(ghost, direction) {
     // ghost.timerId = ghost.timerId*speedChange
-    if (!ghost.isScared && gameOver === 0) {
+    if (gameOver === 0) {
         // clearInterval(ghost.constantTimer)
         // console.log('in speed up', ghost.speed)
-        ghost.constantTimer = setInterval(function() {speedUpTimer(ghost, ghost.speed, direction)}, constantIncrease)
-    }
-    else if (gameOver === 1) {
-        clearInterval(ghost.constantTimer)
         clearInterval(ghost.timerId)
-    }
-}
+        // clearInterval(ghost.constantTimer)
+        // ghost.constantTimer = setInterval(function() {speedUp(ghost, direction)}, constantIncrease)
+        // console.log(ghost.speed)
+        if(!ghost.isScared) {
+            ghost.speed = ghost.speed * speedChange
+        }
 
-function speedUpTimer(ghost, ghostSpeed, direction) {
-    if (gameOver === 1) {
-        clearInterval(ghost.constantTimer)
-        clearInterval(ghost.timerId)
-        // console.log('A')
-    }
-    else if (ghost.isScared) {
-        clearInterval(ghost.constantTimer)
-        // console.log('B')
+        if (ghost.currentIndex != ghost.startIndex) {
+            direction = ghost.savedDirection
+        }
+        // direction = ghost.savedDirection
+        ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.speed, direction)}, ghost.speed)
     }
     else {
-        clearInterval(ghost.timerId)
         clearInterval(ghost.constantTimer)
-        ghost.speed = ghostSpeed*speedChange
-        speedUp(ghost)
-        direction = ghost.savedDirection
-        ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.speed, direction)}, ghost.speed)
-        // console.log(ghost.className, ghost.speed)
-        // console.log('C')
+        clearInterval(ghost.timerId)
     }
-
 }
 
+// function speedUpTimer(ghost, ghostSpeed, direction) {
+//     if (gameOver === 1) {
+//         clearInterval(ghost.constantTimer)
+//         clearInterval(ghost.timerId)
+//         // console.log('A')
+//     }
+//     else if (ghost.isScared) {
+//         clearInterval(ghost.constantTimer)
+//         // console.log('B')
+//     }
+//     else {
+//         clearInterval(ghost.timerId)
+//         clearInterval(ghost.constantTimer)
+//         ghost.speed = ghostSpeed*speedChange
+//         speedUp(ghost)
+//         direction = ghost.savedDirection
+//         ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.speed, direction)}, ghost.speed)
+//         // console.log(ghost.className, ghost.speed)
+//         // console.log('C')
+//     }
+
+// }
+
+
+
+// function speedUp(ghost) {
+//     // ghost.timerId = ghost.timerId*speedChange
+//     if (!ghost.isScared && gameOver === 0) {
+//         // clearInterval(ghost.constantTimer)
+//         // console.log('in speed up', ghost.speed)
+//         ghost.constantTimer = setInterval(function() {speedUpTimer(ghost, ghost.speed, direction)}, constantIncrease)
+//     }
+//     else if (gameOver === 1) {
+//         clearInterval(ghost.constantTimer)
+//         clearInterval(ghost.timerId)
+//     }
+// }
+
+// function speedUpTimer(ghost, ghostSpeed, direction) {
+//     if (gameOver === 1) {
+//         clearInterval(ghost.constantTimer)
+//         clearInterval(ghost.timerId)
+//         // console.log('A')
+//     }
+//     else if (ghost.isScared) {
+//         clearInterval(ghost.constantTimer)
+//         // console.log('B')
+//     }
+//     else {
+//         clearInterval(ghost.timerId)
+//         clearInterval(ghost.constantTimer)
+//         ghost.speed = ghostSpeed*speedChange
+//         speedUp(ghost)
+//         direction = ghost.savedDirection
+//         ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.speed, direction)}, ghost.speed)
+//         // console.log(ghost.className, ghost.speed)
+//         // console.log('C')
+//     }
+
+// }
+
 restartBtn.addEventListener('click', function() {
+    unScareGhosts()
+    clearTimeout(timeout)
+
+    countdownTimer.classList.remove('active')
+    countdownTimer2.classList.remove('active')
+    countdownTimer.classList.add('hidden')
+    countdownTimer2.classList.add('hidden')
+
+    if (ghosts[0].speed == ghosts[0].slowSpeed) {
+        clearInterval(downloadTimer)
+    }
+
+    //for each ghost - we need to stop it moving
+    ghosts.forEach(ghost => clearInterval(ghost.timerId))
+    direction = 0
+    powerEaten = 0
+
+    fruitBoardPoints = 50
+    fruitRandomPoints = 200
+
+    //remove eventlistener from our control function
+    document.removeEventListener('keydown', control)
+
+    clearInterval(timer)
+    clearTimeout(fruitBoard)
+    clearTimeout(fruitRandom)
+    ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
 
     lastEvent = NaN
 
-
-
-
     messageDisplay.innerHTML = ""
     score = 0
     scoreDisplay.innerHTML = '00'
@@ -420,12 +575,12 @@ restartBtn.addEventListener('click', function() {
         clearInterval(ghost.constantTimer)
         clearInterval(ghost.timerId)
     })
+    direction = -width
 
     for (let i = 0; i < ghostStartSpeeds.length; i++) {
         ghosts[i].speed = ghostStartSpeeds[i]
         // console.log('restarted speeds', ghosts[i].speed)
     }
-    makeFruit()
     // console.log('restarted')
 
     //remove old classes
@@ -433,7 +588,9 @@ restartBtn.addEventListener('click', function() {
     squares = []
     createBoard()
 
-    gameOver = 0
+    makeFruitBoard()
+    makeFruitRandom()
+
     start = 1
     pacmanCurrentIndex = 490
     squares[pacmanCurrentIndex].classList.add('pacman')
@@ -445,10 +602,71 @@ restartBtn.addEventListener('click', function() {
 
     ghosts.forEach(ghost => startGhost(ghost))
 
-    ghosts.forEach(ghost => speedUp(ghost))
+    ghosts.forEach(ghost => speedUp(ghost, direction))
 
     document.addEventListener('keydown', control)
+
+
+
+
+
+    // lastEvent = NaN
+
+    // messageDisplay.innerHTML = ""
+    // score = 0
+    // scoreDisplay.innerHTML = '00'
+    // squares[pacmanCurrentIndex].classList.remove('pacman')
+    // ghosts.forEach(ghost => {
+    //     squares[ghost.currentIndex].classList.remove(ghost.className)
+    //     squares[ghost.currentIndex].classList.remove('ghost')
+    //     if (ghost.isScared) {
+    //         squares[ghost.currentIndex].classList.remove('scared-ghost')
+    //     }
+    //     clearInterval(ghost.constantTimer)
+    //     clearInterval(ghost.timerId)
+    // })
+    // direction = -width
+
+    // for (let i = 0; i < ghostStartSpeeds.length; i++) {
+    //     ghosts[i].speed = ghostStartSpeeds[i]
+    //     // console.log('restarted speeds', ghosts[i].speed)
+    // }
+    // // console.log('restarted')
+    // clearInterval(timer)
+    // clearTimeout(fruitBoard)
+    // clearTimeout(fruitRandom)
+    // //remove old classes
+    // grid.innerHTML = ''
+    // squares = []
+    // createBoard()
+
+    // makeFruitBoard()
+    // makeFruitRandom()
+
+    // gameOver = 0
+    // start = 1
+    // powerEaten = 0
+    // pacmanCurrentIndex = 490
+    // squares[pacmanCurrentIndex].classList.add('pacman')
+    // ghosts.forEach(ghost => {
+    //     ghost.currentIndex = ghost.startIndex
+    //     squares[ghost.currentIndex].classList.add(ghost.className)
+    //     squares[ghost.currentIndex].classList.add('ghost')
+    // })
+
+    // ghosts.forEach(ghost => startGhost(ghost))
+
+    // ghosts.forEach(ghost => speedUp(ghost, direction))
+
+    // document.addEventListener('keydown', control)
 })
+
+
+
+
+
+
+
 
 // down - 40
 // up key - 38
@@ -473,25 +691,25 @@ function control(e) {
         switch(e.keyCode) {
             case 40:
             // console.log('pressed down')
-            direction = width
+            pacmanDirection = width
             move()
             break
 
             case 38:
             // console.log('pressed up')
-            direction = -width
+            pacmanDirection = -width
             move()
             break
 
             case 37: 
             // console.log('pressed left')
-            direction = -1
+            pacmanDirection = -1
             move()
             break
 
             case 39:
             // console.log('pressed right')
-            direction = 1
+            pacmanDirection = 1
             move()
             break
         }
@@ -516,23 +734,81 @@ function powerPelletEaten() {
         //add a score of 10
         score +=10
         scoreDisplay.innerHTML = score
+        // console.log(ghosts[0].savedSpeed)
 
+        ghosts.forEach(ghost => clearInterval(ghost.timerId))
+        ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
+        // ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
+        // if (ghosts[0].isScared || ghosts[1].isScared || ghosts[2].isScared || ghosts[3].isScared) {
+        //     // clearTimeout(timeout)
+        //     // clearInterval(downloadTimer)
+        //     // console.log('Timers should reset')
+        // }
+
+
+        for (let i = 0; i < ghosts.length; i++) {
+            // if (ghosts[i].speed != ghosts[i].slowSpeed) {
+                ghosts[i].isScared = true
+                squares[ghosts[i].currentIndex].classList.add('scared-ghost')
+                if (ghosts[i].speed != ghosts[i].slowSpeed) {
+                    ghosts[i].savedSpeed = ghosts[i].speed
+                }
+                // console.log('saved speed updated to', ghosts[i].savedSpeed ,ghosts[i].className)
+
+
+                // clearInterval(ghosts[i].timerId)
+                // clearInterval(ghosts[i].constantTimer)
+                // ghosts[i].speed = ghosts[i].savedSpeed
+                // speedUp(ghosts[i], direction)
+
+                // ghosts.forEach(ghost => clearInterval(ghost.timerId))
+                // ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
+                // // ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.speed, direction)}, ghost.speed))
+                // ghosts.forEach(ghost => ghost.speed = ghost.savedSpeed)
+                // ghosts.forEach(ghost => speedUp(ghost, direction))
+
+            //}
+        }
+        // if (!ghosts[0].isScared || !ghosts[1].isScared || !ghosts[2].isScared || !ghosts[3].isScared) {
+        //     //change each of the four ghosts to isScared
+        //     ghosts.forEach(ghost => ghost.isScared = true)
+        //     ghosts.forEach(ghost => squares[ghost.currentIndex].classList.add('scared-ghost'))
+        //     ghosts.forEach(ghost => ghost.savedSpeed = ghost.speed)
+        // }
+
+        clearTimeout(timeout)
+        clearInterval(downloadTimer)
+        // console.log('Timers should reset')
+
+        // //change each of the four ghosts to isScared
+        // ghosts.forEach(ghost => ghost.isScared = true)
+        // ghosts.forEach(ghost => squares[ghost.currentIndex].classList.add('scared-ghost'))
+        // ghosts.forEach(ghost => ghost.savedSpeed = ghost.speed)
+        ghosts.forEach(ghost => ghost.speed = ghost.slowSpeed)
+        ghosts.forEach(ghost => ghostMovement(ghost, ghost.slowSpeed, direction))
+        // ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
+
+
+
+
+        powerEaten = 1
 
         countdownTimer.classList.remove('hidden')
         countdownTimer2.classList.remove('hidden')
         countdownTimer.classList.add('active')
         countdownTimer2.classList.add('active')
 
-        let timeleft = unScareTimer / 1000
-        let timeleft2 = unScareTimer / 1000
+        timeleft = unScareTimer / 1000
+        timeleft2 = unScareTimer / 1000
         countdownTimer.textContent = timeleft
         countdownTimer2.textContent = timeleft2
-        let downloadTimer = setInterval(function() {
+        downloadTimer = setInterval(function() {
             timeleft -= 1
             timeleft2 -= 1
             if (timeleft == 0) {
                 countdownTimer.textContent = 'Times Up!'
                 countdownTimer2.textContent = 'Times Up!'
+                powerEaten = 0
             }
             else {
                 countdownTimer.textContent = timeleft
@@ -547,22 +823,148 @@ function powerPelletEaten() {
             }
         }, 1000)
 
-        ghosts.forEach(ghost => clearInterval(ghost.timerId))
-        ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
-
-        //change each of the four ghosts to isScared
-        ghosts.forEach(ghost => ghost.isScared = true)
-        ghosts.forEach(ghost => squares[ghost.currentIndex].classList.add('scared-ghost'))
-        ghosts.forEach(ghost => ghost.savedSpeed = ghost.speed)
-        ghosts.forEach(ghost => ghost.speed = ghost.slowSpeed)
-        ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
-
         //use setTimeout to unscare ghosts after certain amount of time
         // alreadyEaten = 1  
-        setTimeout(unScareGhosts, unScareTimer)
-
+        timeout = setTimeout(unScareGhosts, unScareTimer)
     }
 }
+
+
+
+
+// let scaredFlag = 0
+// function powerPelletEaten() {
+//     //if square pacman is in contains a power pellet
+//     if (squares[pacmanCurrentIndex].classList.contains('power-pellet')) {
+//         //remove power pellet class
+//         // squares[pacmanCurrentIndex].classList.remove('power-pellet')
+//         // squares[pacmanCurrentIndex].classList.add('empty')
+//         //add a score of 10
+//         score +=10
+//         scoreDisplay.innerHTML = score
+
+
+//         for (let i = 0; i < ghosts.length; i++) {
+//             if (ghosts[i].isScared == false) {
+//                 scaredFlag = 1
+//             }
+//         }
+
+//         if (scaredFlag == 1) {
+//             // ghosts.forEach(ghost => clearInterval(ghost.timerId))
+//             // ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
+
+//             //change each of the four ghosts to isScared
+//             console.log('Scared')
+//             console.log(ghosts[0].speed)
+//             ghosts.forEach(ghost => ghost.isScared = true)
+//             ghosts.forEach(ghost => squares[ghost.currentIndex].classList.add('scared-ghost'))
+
+//             ghosts.forEach(ghost => ghost.savedSpeed = ghost.speed)
+//             // timeout = setInterval(unScareGhosts, unScareTimer)
+
+//             // ghosts.forEach(ghost => ghost.speed = ghost.slowSpeed)
+//             // ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
+
+
+//         }
+//         scaredFlag = 0
+
+
+//         // countdownTimer.classList.remove('hidden')
+//         // countdownTimer2.classList.remove('hidden')
+//         // countdownTimer.classList.add('active')
+//         // countdownTimer2.classList.add('active')
+
+//         if (powerEaten == 1) {
+//             clearInterval(timeout)
+//             clearInterval(downloadTimer)
+//             timeleft = 0
+//             timeleft2 = 0
+//             console.log('Another eaten')
+//         }
+//         else {
+//             countdownTimer.classList.remove('hidden')
+//             countdownTimer2.classList.remove('hidden')
+//             countdownTimer.classList.add('active')
+//             countdownTimer2.classList.add('active')
+//         }
+//         // console.log('Next timer starts')
+//         // timeout = setInterval(unScareGhosts, unScareTimer)
+        
+
+
+//         timeleft = unScareTimer / 1000
+//         timeleft2 = unScareTimer / 1000
+//         countdownTimer.textContent = timeleft
+//         countdownTimer2.textContent = timeleft2
+//         downloadTimer = setInterval(function() {
+//             // console.log(timeleft)
+//             ghosts.forEach(ghost => clearInterval(ghost.timerId))
+//             ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
+//             ghosts.forEach(ghost => ghost.speed = ghost.slowSpeed)
+//             ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
+//             timeout = setInterval(unScareGhosts, unScareTimer)
+            
+//             timeleft -= 1
+//             timeleft2 -= 1
+//             if (timeleft == 0) {
+//                 countdownTimer.textContent = 'Times Up!'
+//                 countdownTimer2.textContent = 'Times Up!'
+//                 // clearInterval(timeout)
+//                 // powerEaten = 0
+//             }
+//             else {
+//                 countdownTimer.textContent = timeleft
+//                 countdownTimer2.textContent = timeleft2
+//             }
+//             if (timeleft <= -1) {
+//                 powerEaten = 0
+//                 // console.log('Ended') 
+//                 clearInterval(timeout)               
+//                 clearInterval(downloadTimer)
+                
+//                 countdownTimer.classList.remove('active')
+//                 countdownTimer2.classList.remove('active')
+//                 countdownTimer.classList.add('hidden')
+//                 countdownTimer2.classList.add('hidden')
+//             }
+//         }, 1000)
+
+        
+        
+
+
+//         // if (powerEaten == 0) {
+//         //     // ghosts.forEach(ghost => clearInterval(ghost.timerId))
+//         //     // ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
+
+//         //     //change each of the four ghosts to isScared
+//         //     console.log('Scared')
+//         //     ghosts.forEach(ghost => ghost.isScared = true)
+//         //     ghosts.forEach(ghost => squares[ghost.currentIndex].classList.add('scared-ghost'))
+//         //     ghosts.forEach(ghost => clearInterval(ghost.timerId))
+//         //     ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
+
+//         //     ghosts.forEach(ghost => ghost.savedSpeed = ghost.speed)
+//         //     timeout = setInterval(unScareGhosts, unScareTimer)
+
+//         //     ghosts.forEach(ghost => ghost.speed = ghost.slowSpeed)
+//         //     ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
+
+
+//         // }
+        
+//         // ghosts.forEach(ghost => ghost.speed = ghost.slowSpeed)
+//         // ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
+       
+
+//         //use setTimeout to unscare ghosts after certain amount of time
+//         // alreadyEaten = 1  
+//         powerEaten = 1
+
+//     }
+// }
 
 
 
@@ -951,17 +1353,36 @@ function unScareGhosts() {
         //     ghosts.forEach(ghost => ghost.isScared = false)
         //     ghosts.forEach(ghost => squares[ghost.currentIndex].classList.remove('scared-ghost'))
         // }
+        // console.log('Unscared')
+        // console.log(ghosts[0].savedSpeed)
+        // ghosts.forEach(ghost => clearInterval(ghost.timerId))
         ghosts.forEach(ghost => ghost.isScared = false)
         ghosts.forEach(ghost => squares[ghost.currentIndex].classList.remove('scared-ghost'))
-        ghosts.forEach(ghost => clearInterval(ghost.timerId))
-        ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.speed, direction)}, ghost.speed))
+        // ghosts.forEach(ghost => clearInterval(ghost.timerId))
+        // ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
+        // ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.speed, direction)}, ghost.speed))
+        // console.log('saved speed returned is', ghosts[0].savedSpeed ,ghosts[0].className)
+        // console.log('saved speed returned is', ghosts[1].savedSpeed ,ghosts[1].className)
+        // console.log('saved speed returned is', ghosts[2].savedSpeed ,ghosts[2].className)
+        // console.log('saved speed returned is', ghosts[3].savedSpeed ,ghosts[3].className)
         ghosts.forEach(ghost => ghost.speed = ghost.savedSpeed)
+        // console.log(ghosts[0].className, ghosts[0].speed, 'unscaring')
+        for (let i = 0; i < ghosts.length; i++) {
+            speedUp(ghosts[i], direction)
+        }
+        
+        ghosts.forEach(ghost => ghost.constantTimer = setInterval(function() {speedUp(ghost, direction)}, constantIncrease))
+
+
+        // ghosts.forEach(ghost => ghost.constantTimer = setInterval(function() {speedUp(ghost, direction)}, constantIncrease))
+        // ghosts.forEach(ghost => speedUp(ghost, direction))
         // console.log('after',ghosts[0].speed)
     }
-    ghosts.forEach(ghost => ghost.savedSpeed = 0)
-    ghosts.forEach(ghost => speedUp(ghost))
+    // ghosts.forEach(ghost => ghost.savedSpeed = 0)
+    
     // alreadyEaten = 0
     ghostPoints = 0
+    // powerEaten = 0
     
 }
 
@@ -996,8 +1417,10 @@ ghosts.forEach(ghost => {
 
 //move the ghosts
 function ghostMovement(ghost, changingSpeed, direction) {
-    //all our code    
+    //all our code 
+    // console.log(ghosts[0].className, ghosts[0].isScared) //gets called 12 times initially
     prevDirection = -direction 
+    // ghost.savedDirection = direction
     //Phase 1
     // if ((ghost.currentIndex == ghost.startIndex) || 
     //     (ghost.currentIndex == ghost.startIndex - width) ||
@@ -1018,12 +1441,13 @@ function ghostMovement(ghost, changingSpeed, direction) {
     // }
 
 
-    if (((ghost.currentIndex == ghost.startIndex)) && ((ghost.className == 'blinky') || (ghost.className == 'inky')) && (!squares[ghost.currentIndex + direction].classList.contains('wall'))) {
+    if (((ghost.currentIndex == ghost.startIndex) || (ghost.currentIndex == ghost.startIndex - width)) && ((ghost.className == 'blinky') || (ghost.className == 'inky'))) { //&& (!squares[ghost.currentIndex + direction].classList.contains('wall'))) {
         if (squares[ghost.currentIndex + direction].classList.contains('ghost')) {
             direction = 0
         }
         else {
             direction = -width
+            ghost.savedDirection = direction
         }
         
         ghost.prevIndex = ghost.currentIndex
@@ -1040,12 +1464,13 @@ function ghostMovement(ghost, changingSpeed, direction) {
             squares[ghost.currentIndex].classList.add('scared-ghost')
         }
     }
-    else if (((ghost.currentIndex == ghost.startIndex) || (ghost.currentIndex == ghost.startIndex - width)) && ((ghost.className != 'blinky') || (ghost.className != 'inky')) && (!squares[ghost.currentIndex + direction].classList.contains('wall'))) {
+    else if (((ghost.currentIndex == ghost.startIndex) || (ghost.currentIndex == ghost.startIndex - width) || (ghost.currentIndex == ghost.startIndex - 2*width)) && ((ghost.className == 'pinky') || (ghost.className == 'clyde'))) { //&& (!squares[ghost.currentIndex + direction].classList.contains('wall'))) {
         if (squares[ghost.currentIndex + direction].classList.contains('ghost')) {
             direction = 0
         }
         else {
             direction = -width
+            ghost.savedDirection = direction
         }
 
         ghost.prevIndex = ghost.currentIndex
@@ -1062,12 +1487,14 @@ function ghostMovement(ghost, changingSpeed, direction) {
             squares[ghost.currentIndex].classList.add('scared-ghost')
         }
     }
+    
 
 
 
 
     //Phase 2
     else {
+        // console.log('move')
         clearInterval(ghost.timerId)
         const directions = [-1, +1, -width, +width]
 
@@ -1086,6 +1513,9 @@ function ghostMovement(ghost, changingSpeed, direction) {
 
                 squares[ghost.currentIndex].classList.add(ghost.className)  
                 squares[ghost.currentIndex].classList.add('ghost')  
+                if (ghost.isScared) {
+                    squares[ghost.currentIndex].classList.add('scared-ghost')
+                }
             }
             //for tunneling
             else if (ghost.currentIndex == 364 && direction == -1) {
@@ -1096,10 +1526,14 @@ function ghostMovement(ghost, changingSpeed, direction) {
 
                 squares[ghost.currentIndex].classList.add(ghost.className)  
                 squares[ghost.currentIndex].classList.add('ghost')
+                if (ghost.isScared) {
+                    squares[ghost.currentIndex].classList.add('scared-ghost')
+                }
             }
 
             //for most cases
             else {
+                // console.log(ghost.className, ghost.speed)
                 updatedDirections = []
                 for (let i = 0; i < directions.length; i++) {
                     if (directions[i] != prevDirection &&
@@ -1107,8 +1541,10 @@ function ghostMovement(ghost, changingSpeed, direction) {
                         squares[ghost.currentIndex + directions[i]].classList.contains('pac-dot') ||
                         squares[ghost.currentIndex + directions[i]].classList.contains('power-pellet') || 
                         squares[ghost.currentIndex + directions[i]].classList.contains('pacman') ||
-                        squares[ghost.currentIndex + directions[i]].classList.contains('fruit')) &&
-                        !squares[ghost.currentIndex + directions[i]].classList.contains('ghost')) {
+                        squares[ghost.currentIndex + directions[i]].classList.contains('fruit-board') || 
+                        squares[ghost.currentIndex + directions[i]].classList.contains('fruit-random')) &&
+                        !squares[ghost.currentIndex + directions[i]].classList.contains('ghost') &&
+                        ((squares[pacmanCurrentIndex] != undefined) && (squares[ghosts[i].currentIndex] != undefined))) {
                             updatedDirections.push(directions[i])
                     }
                 }
@@ -1130,15 +1566,17 @@ function ghostMovement(ghost, changingSpeed, direction) {
                 if (squares[ghost.currentIndex + direction].classList.contains('ghost')) {
                     direction = prevDirection
                 }
+                ghost.savedDirection = direction
 
                 //####### For moving ghost ###########
                 if (gameOver == 0) {
                     //remove any ghost
                     squares[ghost.currentIndex].classList.remove(ghost.className)
-                    squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost')
+                    squares[ghost.currentIndex].classList.remove('ghost')
                     // //add direction to current Index
                     // ghostEaten()
                     if (ghost.isScared) {
+                        squares[ghost.currentIndex].classList.remove('scared-ghost')
                         ghostEaten()
                     }
                     // else if (!ghost.isScared) {
@@ -1165,10 +1603,11 @@ function ghostMovement(ghost, changingSpeed, direction) {
                             squares[ghost.currentIndex].classList.add(ghost.className)  
                             squares[ghost.currentIndex].classList.add('ghost')
                         }
-                        
-                        
+                        //if the ghost is currently scared 
                         if (ghost.isScared) {
+                            squares[ghost.currentIndex].classList.add('scared-ghost')
                             ghostEaten()
+                            // clearInterval(ghost.timerId)
                         }
                         else if (!ghost.isScared) {
                             checkForGameOver()
@@ -1182,22 +1621,23 @@ function ghostMovement(ghost, changingSpeed, direction) {
                 
             }
 
-            //if the ghost is currently scared 
-            if (ghost.isScared) {
-                squares[ghost.currentIndex].classList.add('scared-ghost')
-                // clearInterval(ghost.timerId)
-            }
             
-            ghost.savedDirection = direction
+            
+            // ghost.savedDirection = direction
 
-        }, changingSpeed )            
+        }, changingSpeed)            
     }
+    // ghost.savedDirection = direction
 
 }
 
 function startGhost(ghost) {
-    let direction = -width   //cannot remove    
+    direction = -width   //cannot remove    
     ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.speed, direction)}, ghost.speed)
+    if (ghost.speed != ghost.slowSpeed) {
+        ghost.constantTimer = setInterval(function() {speedUp(ghost, direction)}, constantIncrease)
+    }
+    
 }
 
 
@@ -1214,10 +1654,13 @@ function checkForGameOver() {
                     ghosts.forEach(ghost => clearInterval(ghost.timerId))
                     direction = 0
                     gameOver = 1
+                    powerEaten = 0
+
+                    scoreDisplay.innerHTML = `${score} L` 
 
                     if (score > highscore) {
                         highscore = score
-                        highscoreDisplay.innerHTML = highscore
+                        highscoreDisplay.innerHTML = `${highscore} L` 
                     }
 
                     savedGrid = grid.innerHTML
@@ -1241,15 +1684,17 @@ function checkForGameOver() {
                         startBtn.classList.add('active')
                     }, 3500)
 
-                    fruitPoints = 0
+                    fruitBoardPoints = 50
+                    fruitRandomPoints = 200
 
                     //remove eventlistener from our control function
                     document.removeEventListener('keydown', control)
                     //tell user the game is over   
                     messageDisplay.innerHTML = 'YOU LOST'
                     clearInterval(timer)
-                    clearInterval(fruit)
-                    // clearInterval(constantTimer)
+                    clearTimeout(fruitBoard)
+                    clearTimeout(fruitRandom)
+                    ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
 
                     restartBtn.classList.remove('active')
                     restartBtn.classList.add('hidden')
@@ -1258,6 +1703,7 @@ function checkForGameOver() {
                     // restartBtn.classList.remove('hidden')
                     // restartBtn.classList.add('active')
                     start = 0
+                    lastEvent = 0
             }
         }
     }
@@ -1273,15 +1719,31 @@ function checkForWin() {
         }
     }
     if (checker == 0){ //(score > 274) {
+        unScareGhosts()
+        clearTimeout(timeout)
+
         //stop each ghost
         ghosts.forEach(ghost => clearInterval(ghost.timerId))
 
+        countdownTimer.classList.remove('active')
+        countdownTimer2.classList.remove('active')
+        countdownTimer.classList.add('hidden')
+        countdownTimer2.classList.add('hidden')
+
         direction = 0
-        gameOver = 1
+        powerEaten = 0
+
+        if (ghosts[0].speed == ghosts[0].slowSpeed) {
+            clearInterval(downloadTimer)
+        }
+        
+
+        score += winningPoints
+        scoreDisplay.innerHTML = `${score} W` 
 
         if (score > highscore) {
             highscore = score
-            highscoreDisplay.innerHTML = highscore
+            highscoreDisplay.innerHTML = `${highscore} W` 
         }
 
         savedGrid = grid.innerHTML
@@ -1303,13 +1765,17 @@ function checkForWin() {
             restartBtn.classList.add('active')
         }, 3500)
 
+        fruitBoardPoints = 50
+        fruitRandomPoints = 200
+
         //remove eventlistener from our control function
         document.removeEventListener('keydown', control)
         //tell user the game is over   
         messageDisplay.innerHTML = 'YOU WON!'
         clearInterval(timer)
-        clearInterval(fruit)
-        // clearInterval(constantTimer)
+        clearTimeout(fruitBoard)
+        clearTimeout(fruitRandom)
+        ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
 
         restartBtn.classList.remove('active')
         restartBtn.classList.add('hidden')
@@ -1318,8 +1784,12 @@ function checkForWin() {
         // restartBtn.classList.remove('hidden')
         // restartBtn.classList.add('active')
         start = 0
+        lastEvent = 0
     }
 }
+
+
+
 
 
 
