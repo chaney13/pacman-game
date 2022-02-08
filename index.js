@@ -387,6 +387,7 @@ function fruitEaten() {
 
 startBtn.addEventListener('click', function() {
     start = 1
+    gameOver = 0
     // ghosts.forEach(ghost => startGhost(ghost))
     // document.addEventListener('keydown', control)
     // ghosts.forEach(ghost => speedUp(ghost))
@@ -1732,6 +1733,7 @@ function checkForWin() {
 
         direction = 0
         powerEaten = 0
+        gameOver = 1
 
         if (ghosts[0].speed == ghosts[0].slowSpeed) {
             clearInterval(downloadTimer)
