@@ -126,6 +126,7 @@ p {
     border: 0.75vh solid black;
     /* border: 5px solid black; */
     box-sizing: border-box;
+    border-radius: 1vh;
 }
 
 .ghost-lair {
@@ -273,13 +274,15 @@ p {
 
 .fruit-board {
     background-color: lime;
-    border-radius: 7.5px;
+    border-radius: 1vh;
+    /* border-radius: 7.5px; */
     border: none;
 }
 
 .fruit-random {
     background-color: magenta;
-    border-radius: 7.5px;
+    border-radius: 1vh;
+    /* border-radius: 7.5px; */
     border: none;
 }
 
