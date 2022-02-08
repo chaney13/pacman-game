@@ -1763,8 +1763,10 @@ function checkForWin() {
             squares = savedSquares
             savedSquares = []
             clearInterval(gif)
-            restartBtn.classList.remove('hidden')
-            restartBtn.classList.add('active')
+            restartBtn.classList.remove('active')
+            restartBtn.classList.add('hidden')
+            startBtn.classList.remove('hidden')
+            startBtn.classList.add('active')
         }, 3500)
 
         // fruitBoardPoints = 50
