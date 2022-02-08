@@ -34,7 +34,7 @@ let winningPoints = 3000 // 3000 points awarded if you win
 let powerEaten = 0
 
 let constantTimer = 0
-let constantIncrease = 5000 // every 5 sec
+let constantIncrease = 10000 // every 10 sec (originally 5)
 let speedChange = 0.95
 
 // let alreadyEaten = 0
@@ -66,6 +66,8 @@ boxWin.style.display = "none"
 let pacmanPrevIndex = 0
 let ghostPoints = 0
 let rewardedPoints = 0
+
+let gif = 0
 
 
 // 0 - pacdots
@@ -791,8 +793,8 @@ function powerPelletEaten() {
         // ghosts.forEach(ghost => squares[ghost.currentIndex].classList.add('scared-ghost'))
         // ghosts.forEach(ghost => ghost.savedSpeed = ghost.speed)
         ghosts.forEach(ghost => ghost.speed = ghost.slowSpeed)
-        ghosts.forEach(ghost => ghostMovement(ghost, ghost.slowSpeed, direction))
-        // ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
+        // ghosts.forEach(ghost => ghostMovement(ghost, ghost.slowSpeed, direction))
+        ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
 
 
 
@@ -1025,135 +1027,142 @@ function powerPelletEaten() {
 //ghost.currentIndex = pacmanPrevIndex
 function ghostEaten() {
     for (let j = 0; j < ghosts.length; j++) {
-        if ((squares[pacmanCurrentIndex].classList.contains('ghost') && 
-            squares[pacmanCurrentIndex].classList.contains('scared-ghost')) && 
-            ((pacmanCurrentIndex == ghosts[j].prevIndex) || (pacmanCurrentIndex == ghosts[j].currentIndex))) {
-            // pacmanPrevIndex == ghosts[j].prevIndex) {
-
-                        clearInterval(ghosts[j].timerId)
-                        ghosts[j].prevIndex = 0
-                        ghostPoints += 100
-                        // console.log('1',ghostPoints)
-                        score += ghostPoints
-                        scoreDisplay.innerHTML = score
-                        rewardedPoints = 1
-
-                        squares[ghosts[j].currentIndex].classList.remove(ghosts[j].className, 'ghost', 'scared-ghost')
-                        ghosts[j].currentIndex = ghosts[j].startIndex
-                        squares[ghosts[j].currentIndex].classList.add(ghosts[j].className, 'ghost')
-                        ghosts[j].isScared = false
-                        startGhost(ghosts[j])
-                        // console.log("A") // happened every single time except 1
+        if ((squares[pacmanCurrentIndex] != undefined) && (squares[ghosts[j].currentIndex] != undefined)) {
 
 
-                        // for (let i = 0; i < ghosts.length; i++) {
-                        //     if (ghosts[i].currentIndex == pacmanCurrentIndex) {
-                        //         squares[ghosts[i].currentIndex].classList.remove(ghosts[i].className, 'ghost', 'scared-ghost')
-                        //         ghosts[i].currentIndex = ghosts[i].startIndex
-                        //         squares[ghosts[i].currentIndex].classList.add(ghosts[i].className, 'ghost')
-                        //         ghosts[i].isScared = false
-                        //         clearInterval(ghosts[i].timerId)
-                        //         startGhost(ghosts[i])
 
-                        //     }
-                        // }
+
+
+            if ((squares[pacmanCurrentIndex].classList.contains('ghost') && 
+                squares[pacmanCurrentIndex].classList.contains('scared-ghost')) && 
+                ((pacmanCurrentIndex == ghosts[j].prevIndex) || (pacmanCurrentIndex == ghosts[j].currentIndex))) {
+                // pacmanPrevIndex == ghosts[j].prevIndex) {
+
+                            clearInterval(ghosts[j].timerId)
+                            ghosts[j].prevIndex = 0
+                            ghostPoints += 100
+                            // console.log('1',ghostPoints)
+                            score += ghostPoints
+                            scoreDisplay.innerHTML = score
+                            rewardedPoints = 1
+
+                            squares[ghosts[j].currentIndex].classList.remove(ghosts[j].className, 'ghost', 'scared-ghost')
+                            ghosts[j].currentIndex = ghosts[j].startIndex
+                            squares[ghosts[j].currentIndex].classList.add(ghosts[j].className, 'ghost')
+                            ghosts[j].isScared = false
+                            startGhost(ghosts[j])
+                            // console.log("A") // happened every single time except 1
+
+
+                            // for (let i = 0; i < ghosts.length; i++) {
+                            //     if (ghosts[i].currentIndex == pacmanCurrentIndex) {
+                            //         squares[ghosts[i].currentIndex].classList.remove(ghosts[i].className, 'ghost', 'scared-ghost')
+                            //         ghosts[i].currentIndex = ghosts[i].startIndex
+                            //         squares[ghosts[i].currentIndex].classList.add(ghosts[i].className, 'ghost')
+                            //         ghosts[i].isScared = false
+                            //         clearInterval(ghosts[i].timerId)
+                            //         startGhost(ghosts[i])
+
+                            //     }
+                            // }
+
+
+
+            }
+
+            else if ((squares[pacmanPrevIndex].classList.contains('ghost') && 
+                    squares[pacmanPrevIndex].classList.contains('scared-ghost')) && 
+                    ((pacmanCurrentIndex == ghosts[j].prevIndex) || (pacmanCurrentIndex == ghosts[j].currentIndex)) && 
+                    (rewardedPoints == 0)) {
+                    // pacmanPrevIndex == ghosts[j].prevIndex) {
+                            clearInterval(ghosts[j].timerId)
+                            ghosts[j].prevIndex = 0
+                            ghostPoints += 100
+                            // console.log('1',ghostPoints)
+                            score += ghostPoints
+                            scoreDisplay.innerHTML = score
+                            rewardedPoints = 1
+
+                            squares[ghosts[j].currentIndex].classList.remove(ghosts[j].className, 'ghost', 'scared-ghost')
+                            ghosts[j].currentIndex = ghosts[j].startIndex
+                            squares[ghosts[j].currentIndex].classList.add(ghosts[j].className, 'ghost')
+                            ghosts[j].isScared = false
+                            startGhost(ghosts[j])
+                            // console.log("B") // never happened
+
+
+                            // for (let i = 0; i < ghosts.length; i++) {
+                            //     if (ghosts[i].currentIndex == pacmanCurrentIndex) {
+                            //         squares[ghosts[i].currentIndex].classList.remove(ghosts[i].className, 'ghost', 'scared-ghost')
+                            //         ghosts[i].currentIndex = ghosts[i].startIndex
+                            //         squares[ghosts[i].currentIndex].classList.add(ghosts[i].className, 'ghost')
+                            //         ghosts[i].isScared = false
+                            //         clearInterval(ghosts[i].timerId)
+                            //         startGhost(ghosts[i])
+
+                            //     }
+                            // }
+                    }
 
                 
+            else if (((ghosts[j].currentIndex == pacmanPrevIndex) && (ghosts[j].prevIndex == pacmanCurrentIndex)) && (rewardedPoints == 0 )) {
+                    clearInterval(ghosts[j].timerId)
+                    ghosts[j].prevIndex = 0
+                    ghostPoints += 100
+                    // console.log('1',ghostPoints)
+                    score += ghostPoints
+                    scoreDisplay.innerHTML = score
+                    // rewardedPoints = 1
+                    squares[ghosts[j].currentIndex].classList.remove(ghosts[j].className, 'ghost', 'scared-ghost')
+                    ghosts[j].currentIndex = ghosts[j].startIndex
+                    squares[ghosts[j].currentIndex].classList.add(ghosts[j].className, 'ghost')
+                    ghosts[j].isScared = false
+                    startGhost(ghosts[j])
+                    // console.log("C") //happened once
+                // for (let i = 0; i < ghosts.length; i++) {
+                //     if (ghosts[i].currentIndex == pacmanCurrentIndex) {
+                //         squares[ghosts[i].currentIndex].classList.remove(ghosts[i].className, 'ghost', 'scared-ghost')
+                //         ghosts[i].currentIndex = ghosts[i].startIndex
+                //         squares[ghosts[i].currentIndex].classList.add(ghosts[i].className, 'ghost')
+                //         ghosts[i].isScared = false
+                //         clearInterval(ghosts[i].timerId)
+                //         startGhost(ghosts[i])
+                //     }
+                // }
+            }
+        
 
-        }
+            // for (let j = 0; j < ghosts.length; j++) {
+            //     if ((pacmanPrevIndex == ghosts[j].prevIndex) && rewardedPoints == 0 && isScared) {
+            //         clearInterval(ghosts[j].timerId)
+            //         ghosts[j].prevIndex = 0
+            //         ghostPoints += 100
+            //         // console.log('2',ghostPoints)
+            //         score += ghostPoints
+            //         scoreDisplay.innerHTML = score
 
-        else if ((squares[pacmanPrevIndex].classList.contains('ghost') && 
-                squares[pacmanPrevIndex].classList.contains('scared-ghost')) && 
-                ((pacmanCurrentIndex == ghosts[j].prevIndex) || (pacmanCurrentIndex == ghosts[j].currentIndex)) && 
-                (rewardedPoints == 0)) {
-                // pacmanPrevIndex == ghosts[j].prevIndex) {
-                        clearInterval(ghosts[j].timerId)
-                        ghosts[j].prevIndex = 0
-                        ghostPoints += 100
-                        // console.log('1',ghostPoints)
-                        score += ghostPoints
-                        scoreDisplay.innerHTML = score
-                        rewardedPoints = 1
+            //         squares[ghosts[j].currentIndex].classList.remove(ghosts[j].className, 'ghost', 'scared-ghost')
+            //         ghosts[j].currentIndex = ghosts[j].startIndex
+            //         squares[ghosts[j].currentIndex].classList.add(ghosts[j].className, 'ghost')
+            //         ghosts[j].isScared = false
+            //         startGhost(ghosts[j])
 
-                        squares[ghosts[j].currentIndex].classList.remove(ghosts[j].className, 'ghost', 'scared-ghost')
-                        ghosts[j].currentIndex = ghosts[j].startIndex
-                        squares[ghosts[j].currentIndex].classList.add(ghosts[j].className, 'ghost')
-                        ghosts[j].isScared = false
-                        startGhost(ghosts[j])
-                        // console.log("B") // never happened
+            //         // for (let i = 0; i < ghosts.length; i++) {
+            //         //     if (ghosts[i].currentIndex == pacmanCurrentIndex) {
+            //         //         squares[ghosts[i].currentIndex].classList.remove(ghosts[i].className, 'ghost', 'scared-ghost')
+            //         //         ghosts[i].currentIndex = ghosts[i].startIndex
+            //         //         squares[ghosts[i].currentIndex].classList.add(ghosts[i].className, 'ghost')
+            //         //         ghosts[i].isScared = false
+            //         //         clearInterval(ghosts[i].timerId)
+            //         //         startGhost(ghosts[i])
 
+            //         //     }
+            //         // }
 
-                        // for (let i = 0; i < ghosts.length; i++) {
-                        //     if (ghosts[i].currentIndex == pacmanCurrentIndex) {
-                        //         squares[ghosts[i].currentIndex].classList.remove(ghosts[i].className, 'ghost', 'scared-ghost')
-                        //         ghosts[i].currentIndex = ghosts[i].startIndex
-                        //         squares[ghosts[i].currentIndex].classList.add(ghosts[i].className, 'ghost')
-                        //         ghosts[i].isScared = false
-                        //         clearInterval(ghosts[i].timerId)
-                        //         startGhost(ghosts[i])
-
-                        //     }
-                        // }
-                }
-
-            
-        else if (((ghosts[j].currentIndex == pacmanPrevIndex) && (ghosts[j].prevIndex == pacmanCurrentIndex)) && (rewardedPoints == 0 )) {
-                clearInterval(ghosts[j].timerId)
-                ghosts[j].prevIndex = 0
-                ghostPoints += 100
-                // console.log('1',ghostPoints)
-                score += ghostPoints
-                scoreDisplay.innerHTML = score
-                // rewardedPoints = 1
-                squares[ghosts[j].currentIndex].classList.remove(ghosts[j].className, 'ghost', 'scared-ghost')
-                ghosts[j].currentIndex = ghosts[j].startIndex
-                squares[ghosts[j].currentIndex].classList.add(ghosts[j].className, 'ghost')
-                ghosts[j].isScared = false
-                startGhost(ghosts[j])
-                // console.log("C") //happened once
-            // for (let i = 0; i < ghosts.length; i++) {
-            //     if (ghosts[i].currentIndex == pacmanCurrentIndex) {
-            //         squares[ghosts[i].currentIndex].classList.remove(ghosts[i].className, 'ghost', 'scared-ghost')
-            //         ghosts[i].currentIndex = ghosts[i].startIndex
-            //         squares[ghosts[i].currentIndex].classList.add(ghosts[i].className, 'ghost')
-            //         ghosts[i].isScared = false
-            //         clearInterval(ghosts[i].timerId)
-            //         startGhost(ghosts[i])
             //     }
-            // }
-        }
-    
-
-        // for (let j = 0; j < ghosts.length; j++) {
-        //     if ((pacmanPrevIndex == ghosts[j].prevIndex) && rewardedPoints == 0 && isScared) {
-        //         clearInterval(ghosts[j].timerId)
-        //         ghosts[j].prevIndex = 0
-        //         ghostPoints += 100
-        //         // console.log('2',ghostPoints)
-        //         score += ghostPoints
-        //         scoreDisplay.innerHTML = score
-
-        //         squares[ghosts[j].currentIndex].classList.remove(ghosts[j].className, 'ghost', 'scared-ghost')
-        //         ghosts[j].currentIndex = ghosts[j].startIndex
-        //         squares[ghosts[j].currentIndex].classList.add(ghosts[j].className, 'ghost')
-        //         ghosts[j].isScared = false
-        //         startGhost(ghosts[j])
-
-        //         // for (let i = 0; i < ghosts.length; i++) {
-        //         //     if (ghosts[i].currentIndex == pacmanCurrentIndex) {
-        //         //         squares[ghosts[i].currentIndex].classList.remove(ghosts[i].className, 'ghost', 'scared-ghost')
-        //         //         ghosts[i].currentIndex = ghosts[i].startIndex
-        //         //         squares[ghosts[i].currentIndex].classList.add(ghosts[i].className, 'ghost')
-        //         //         ghosts[i].isScared = false
-        //         //         clearInterval(ghosts[i].timerId)
-        //         //         startGhost(ghosts[i])
-
-        //         //     }
-        //         // }
-
-        //     }
-        // } 
-        rewardedPoints = 0  
+            // } 
+            rewardedPoints = 0 
+        } 
     }
 }
 
@@ -1430,6 +1439,7 @@ ghosts.forEach(ghost => {
 function ghostMovement(ghost, changingSpeed, direction) {
     //all our code 
     // console.log(ghosts[0].className, ghosts[0].isScared) //gets called 12 times initially
+    ghostEaten()
     prevDirection = -direction 
     // ghost.savedDirection = direction
     //Phase 1
@@ -1588,7 +1598,7 @@ function ghostMovement(ghost, changingSpeed, direction) {
                     // ghostEaten()
                     if (ghost.isScared) {
                         squares[ghost.currentIndex].classList.remove('scared-ghost')
-                        ghostEaten()
+                        // ghostEaten()
                     }
                     // else if (!ghost.isScared) {
                     //     checkForGameOver()
@@ -1617,7 +1627,7 @@ function ghostMovement(ghost, changingSpeed, direction) {
                         //if the ghost is currently scared 
                         if (ghost.isScared) {
                             squares[ghost.currentIndex].classList.add('scared-ghost')
-                            ghostEaten()
+                            // ghostEaten()
                             // clearInterval(ghost.timerId)
                         }
                         else if (!ghost.isScared) {
@@ -1633,7 +1643,7 @@ function ghostMovement(ghost, changingSpeed, direction) {
             }
 
             
-            
+            ghostEaten()
             // ghost.savedDirection = direction
 
         }, changingSpeed)            
@@ -1683,7 +1693,7 @@ function checkForGameOver() {
                     savedSquares = squares
                     squares = []
                     boxLoss.style.display = "block"
-                    let gif = setInterval(function() {
+                    gif = setTimeout(function() {
                         boxLoss.style.display = "none"
                         // squares = savedSquares
                         grid.innerHTML = savedGrid
@@ -1691,7 +1701,7 @@ function checkForGameOver() {
                         // grid.classList.add('active')
                         squares = savedSquares
                         savedSquares = []
-                        clearInterval(gif)
+                        clearTimeout(gif)
                         // restartBtn.classList.remove('active')
                         // restartBtn.classList.add('hidden')
                         startBtn.classList.remove('hidden')
@@ -1768,7 +1778,7 @@ function checkForWin() {
         savedSquares = squares
         squares = []
         boxWin.style.display = "block"
-        let gif = setInterval(function() {
+        gif = setTimeout(function() {
             boxWin.style.display = "none"
             // squares = savedSquares
             grid.innerHTML = savedGrid
@@ -1776,7 +1786,7 @@ function checkForWin() {
             // grid.classList.add('active')
             squares = savedSquares
             savedSquares = []
-            clearInterval(gif)
+            clearTimeout(gif)
             // restartBtn.classList.remove('active')
             // restartBtn.classList.add('hidden')
             startBtn.classList.remove('hidden')
