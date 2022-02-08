@@ -203,7 +203,8 @@ p {
 
 .power-pellet {
     background-color: peachpuff;
-    border-radius: 7.5px;
+    border-radius: 1vh;
+    /* border-radius: 7.5px; */
     border: none;
     /* border: 2.75px solid black;
     box-sizing: border-box; */
@@ -218,7 +219,8 @@ p {
 
 .pacman {
     background-color: yellow;
-    border-radius: 7.5px;
+    border-radius: 1vh;
+    /* border-radius: 7.5px; */
     border: none;
 }
 
