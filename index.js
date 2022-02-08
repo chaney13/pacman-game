@@ -794,8 +794,10 @@ function powerPelletEaten() {
         // ghosts.forEach(ghost => ghost.savedSpeed = ghost.speed)
         ghosts.forEach(ghost => ghost.speed = ghost.slowSpeed)
         // ghosts.forEach(ghost => ghostMovement(ghost, ghost.slowSpeed, direction))
-        ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
+        // ghosts.forEach(ghost => clearInterval(ghost.timerId))
 
+        ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
+        ghosts.forEach(ghost => ghostMovement(ghost, ghost.slowSpeed, direction))
 
 
 
@@ -1517,6 +1519,7 @@ function ghostMovement(ghost, changingSpeed, direction) {
     else {
         // console.log('move')
         clearInterval(ghost.timerId)
+        
         const directions = [-1, +1, -width, +width]
 
         ghost.timerId = setInterval(function() {
