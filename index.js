@@ -53,7 +53,7 @@ let fruitBoardTimer = 45000 // generate fruit every 45s
 let fruitBoardPoints = 50
 let fruitRandom = 0
 let fruitRandomTimer = 20000 // generate fruit every 20s
-let fruitRandomPoints = 100
+let fruitRandomPoints = 100 // change in 2 other areas
 
 let savedGrid = ''
 let savedSquares = []
@@ -388,6 +388,8 @@ function fruitEaten() {
 startBtn.addEventListener('click', function() {
     start = 1
     gameOver = 0
+    fruitBoardPoints = 50
+    fruitRandomPoints = 100
     // ghosts.forEach(ghost => startGhost(ghost))
     // document.addEventListener('keydown', control)
     // ghosts.forEach(ghost => speedUp(ghost))
@@ -396,9 +398,7 @@ startBtn.addEventListener('click', function() {
     restartBtn.classList.remove('hidden')
     restartBtn.classList.add('active')
 
-
     lastEvent = NaN
-
 
     messageDisplay.innerHTML = ""
     score = 0
@@ -551,7 +551,7 @@ restartBtn.addEventListener('click', function() {
     powerEaten = 0
 
     fruitBoardPoints = 50
-    fruitRandomPoints = 200
+    fruitRandomPoints = 100
 
     //remove eventlistener from our control function
     document.removeEventListener('keydown', control)
@@ -1685,8 +1685,8 @@ function checkForGameOver() {
                         startBtn.classList.add('active')
                     }, 3500)
 
-                    fruitBoardPoints = 50
-                    fruitRandomPoints = 200
+                    // fruitBoardPoints = 50
+                    // fruitRandomPoints = 100
 
                     //remove eventlistener from our control function
                     document.removeEventListener('keydown', control)
@@ -1767,8 +1767,8 @@ function checkForWin() {
             restartBtn.classList.add('active')
         }, 3500)
 
-        fruitBoardPoints = 50
-        fruitRandomPoints = 200
+        // fruitBoardPoints = 50
+        // fruitRandomPoints = 100
 
         //remove eventlistener from our control function
         document.removeEventListener('keydown', control)
