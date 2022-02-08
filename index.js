@@ -447,6 +447,7 @@ startBtn.addEventListener('click', function() {
 })
 
 function speedUp(ghost, direction) {
+    // console.log('Sped up')
     // ghost.timerId = ghost.timerId*speedChange
     if (gameOver === 0) {
         // clearInterval(ghost.constantTimer)
@@ -533,20 +534,24 @@ function speedUp(ghost, direction) {
 // }
 
 restartBtn.addEventListener('click', function() {
+    gameOver = 1
     unScareGhosts()
     clearTimeout(timeout)
+    gameOver = 0
+    start = 1
 
     countdownTimer.classList.remove('active')
     countdownTimer2.classList.remove('active')
     countdownTimer.classList.add('hidden')
     countdownTimer2.classList.add('hidden')
 
-    if (ghosts[0].speed == ghosts[0].slowSpeed) {
-        clearInterval(downloadTimer)
-    }
+    //if (ghosts[0].speed == ghosts[0].slowSpeed) {
+    clearInterval(downloadTimer)
+    //}
 
     //for each ghost - we need to stop it moving
     ghosts.forEach(ghost => clearInterval(ghost.timerId))
+    ghosts.forEach(ghost => ghost.isScared = false)
     direction = 0
     powerEaten = 0
 
@@ -1368,11 +1373,16 @@ function unScareGhosts() {
         // console.log('saved speed returned is', ghosts[3].savedSpeed ,ghosts[3].className)
         ghosts.forEach(ghost => ghost.speed = ghost.savedSpeed)
         // console.log(ghosts[0].className, ghosts[0].speed, 'unscaring')
-        for (let i = 0; i < ghosts.length; i++) {
-            speedUp(ghosts[i], direction)
-        }
+        if (gameOver == 0) {
+            for (let i = 0; i < ghosts.length; i++) {
+                speedUp(ghosts[i], direction)
+            }
+            
+            ghosts.forEach(ghost => ghost.constantTimer = setInterval(function() {speedUp(ghost, direction)}, constantIncrease))
+            
+        }  
         
-        ghosts.forEach(ghost => ghost.constantTimer = setInterval(function() {speedUp(ghost, direction)}, constantIncrease))
+        // ghosts.forEach(ghost => ghost.constantTimer = setInterval(function() {speedUp(ghost, direction)}, constantIncrease))
 
 
         // ghosts.forEach(ghost => ghost.constantTimer = setInterval(function() {speedUp(ghost, direction)}, constantIncrease))
@@ -1653,6 +1663,9 @@ function checkForGameOver() {
                 !squares[ghosts[i].currentIndex].classList.contains('scared-ghost')) && (gameOver == 0)) {
                     //for each ghost - we need to stop it moving
                     ghosts.forEach(ghost => clearInterval(ghost.timerId))
+                    ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
+                    ghosts.forEach(ghost => ghost.isScared = false)
+
                     direction = 0
                     gameOver = 1
                     powerEaten = 0
@@ -1679,8 +1692,8 @@ function checkForGameOver() {
                         squares = savedSquares
                         savedSquares = []
                         clearInterval(gif)
-                        restartBtn.classList.remove('active')
-                        restartBtn.classList.add('hidden')
+                        // restartBtn.classList.remove('active')
+                        // restartBtn.classList.add('hidden')
                         startBtn.classList.remove('hidden')
                         startBtn.classList.add('active')
                     }, 3500)
@@ -1695,7 +1708,6 @@ function checkForGameOver() {
                     clearInterval(timer)
                     clearTimeout(fruitBoard)
                     clearTimeout(fruitRandom)
-                    ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
 
                     restartBtn.classList.remove('active')
                     restartBtn.classList.add('hidden')
@@ -1720,11 +1732,10 @@ function checkForWin() {
         }
     }
     if (checker == 0){ //(score > 274) {
-        unScareGhosts()
-        clearTimeout(timeout)
-
         //stop each ghost
         ghosts.forEach(ghost => clearInterval(ghost.timerId))
+        ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
+        ghosts.forEach(ghost => ghost.isScared = false)
 
         countdownTimer.classList.remove('active')
         countdownTimer2.classList.remove('active')
@@ -1735,9 +1746,12 @@ function checkForWin() {
         powerEaten = 0
         gameOver = 1
 
-        if (ghosts[0].speed == ghosts[0].slowSpeed) {
-            clearInterval(downloadTimer)
-        }
+        unScareGhosts()
+        clearTimeout(timeout)
+
+        //if (ghosts[0].speed == ghosts[0].slowSpeed) {
+        clearInterval(downloadTimer)
+        //}
         
 
         score += winningPoints
@@ -1763,8 +1777,8 @@ function checkForWin() {
             squares = savedSquares
             savedSquares = []
             clearInterval(gif)
-            restartBtn.classList.remove('active')
-            restartBtn.classList.add('hidden')
+            // restartBtn.classList.remove('active')
+            // restartBtn.classList.add('hidden')
             startBtn.classList.remove('hidden')
             startBtn.classList.add('active')
         }, 3500)
@@ -1779,7 +1793,6 @@ function checkForWin() {
         clearInterval(timer)
         clearTimeout(fruitBoard)
         clearTimeout(fruitRandom)
-        ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
 
         restartBtn.classList.remove('active')
         restartBtn.classList.add('hidden')
