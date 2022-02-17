@@ -69,6 +69,12 @@ let rewardedPoints = 0
 
 let gif = 0
 
+const arrowKeys = document.getElementById('arrow-keys')
+const upBtn = document.getElementById('up-btn')
+const leftBtn = document.getElementById('left-btn')
+const rightBtn = document.getElementById('right-btn')
+const downBtn = document.getElementById('down-btn')
+
 
 // 0 - pacdots
 // 1 - wall
@@ -400,6 +406,13 @@ startBtn.addEventListener('click', function() {
     restartBtn.classList.remove('hidden')
     restartBtn.classList.add('active')
 
+    // arrowKeys.classList.remove('hidden')
+    // arrowKeys.classList.add('active-arrow-keys')
+
+
+
+
+
     lastEvent = NaN
 
     messageDisplay.innerHTML = ""
@@ -546,6 +559,12 @@ restartBtn.addEventListener('click', function() {
     countdownTimer2.classList.remove('active')
     countdownTimer.classList.add('hidden')
     countdownTimer2.classList.add('hidden')
+
+
+
+    // arrowKeys.classList.remove('hidden')
+    // arrowKeys.classList.add('active-arrow-keys')
+
 
     //if (ghosts[0].speed == ghosts[0].slowSpeed) {
     clearInterval(downloadTimer)
@@ -724,6 +743,37 @@ function control(e) {
     }
 }
 
+//Displayed arrow keys
+upBtn.addEventListener('click', function() {
+    // console.log('pressed up')
+    if (pacmanDirection != -width) {
+        pacmanDirection = -width
+        move()
+    }
+})
+leftBtn.addEventListener('click', function() {
+    // console.log('pressed left')
+    if (pacmanDirection != -1) {
+        pacmanDirection = -1
+        move()
+    }
+})
+rightBtn.addEventListener('click', function() {
+    // console.log('pressed right')
+    if (pacmanDirection != 1) {
+        pacmanDirection = 1
+        move()
+    }
+})
+downBtn.addEventListener('click', function() {
+    // console.log('pressed down')
+    if (pacmanDirection != width) {
+        pacmanDirection = width
+        move()
+    }
+})
+
+
 function pacDotEaten() {
     if (squares[pacmanCurrentIndex].classList.contains('pac-dot')) {
         // squares[pacmanCurrentIndex].classList.remove('pac-dot')
@@ -838,192 +888,6 @@ function powerPelletEaten() {
         timeout = setTimeout(unScareGhosts, unScareTimer)
     }
 }
-
-
-
-
-// let scaredFlag = 0
-// function powerPelletEaten() {
-//     //if square pacman is in contains a power pellet
-//     if (squares[pacmanCurrentIndex].classList.contains('power-pellet')) {
-//         //remove power pellet class
-//         // squares[pacmanCurrentIndex].classList.remove('power-pellet')
-//         // squares[pacmanCurrentIndex].classList.add('empty')
-//         //add a score of 10
-//         score +=10
-//         scoreDisplay.innerHTML = score
-
-
-//         for (let i = 0; i < ghosts.length; i++) {
-//             if (ghosts[i].isScared == false) {
-//                 scaredFlag = 1
-//             }
-//         }
-
-//         if (scaredFlag == 1) {
-//             // ghosts.forEach(ghost => clearInterval(ghost.timerId))
-//             // ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
-
-//             //change each of the four ghosts to isScared
-//             console.log('Scared')
-//             console.log(ghosts[0].speed)
-//             ghosts.forEach(ghost => ghost.isScared = true)
-//             ghosts.forEach(ghost => squares[ghost.currentIndex].classList.add('scared-ghost'))
-
-//             ghosts.forEach(ghost => ghost.savedSpeed = ghost.speed)
-//             // timeout = setInterval(unScareGhosts, unScareTimer)
-
-//             // ghosts.forEach(ghost => ghost.speed = ghost.slowSpeed)
-//             // ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
-
-
-//         }
-//         scaredFlag = 0
-
-
-//         // countdownTimer.classList.remove('hidden')
-//         // countdownTimer2.classList.remove('hidden')
-//         // countdownTimer.classList.add('active')
-//         // countdownTimer2.classList.add('active')
-
-//         if (powerEaten == 1) {
-//             clearInterval(timeout)
-//             clearInterval(downloadTimer)
-//             timeleft = 0
-//             timeleft2 = 0
-//             console.log('Another eaten')
-//         }
-//         else {
-//             countdownTimer.classList.remove('hidden')
-//             countdownTimer2.classList.remove('hidden')
-//             countdownTimer.classList.add('active')
-//             countdownTimer2.classList.add('active')
-//         }
-//         // console.log('Next timer starts')
-//         // timeout = setInterval(unScareGhosts, unScareTimer)
-        
-
-
-//         timeleft = unScareTimer / 1000
-//         timeleft2 = unScareTimer / 1000
-//         countdownTimer.textContent = timeleft
-//         countdownTimer2.textContent = timeleft2
-//         downloadTimer = setInterval(function() {
-//             // console.log(timeleft)
-//             ghosts.forEach(ghost => clearInterval(ghost.timerId))
-//             ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
-//             ghosts.forEach(ghost => ghost.speed = ghost.slowSpeed)
-//             ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
-//             timeout = setInterval(unScareGhosts, unScareTimer)
-            
-//             timeleft -= 1
-//             timeleft2 -= 1
-//             if (timeleft == 0) {
-//                 countdownTimer.textContent = 'Times Up!'
-//                 countdownTimer2.textContent = 'Times Up!'
-//                 // clearInterval(timeout)
-//                 // powerEaten = 0
-//             }
-//             else {
-//                 countdownTimer.textContent = timeleft
-//                 countdownTimer2.textContent = timeleft2
-//             }
-//             if (timeleft <= -1) {
-//                 powerEaten = 0
-//                 // console.log('Ended') 
-//                 clearInterval(timeout)               
-//                 clearInterval(downloadTimer)
-                
-//                 countdownTimer.classList.remove('active')
-//                 countdownTimer2.classList.remove('active')
-//                 countdownTimer.classList.add('hidden')
-//                 countdownTimer2.classList.add('hidden')
-//             }
-//         }, 1000)
-
-        
-        
-
-
-//         // if (powerEaten == 0) {
-//         //     // ghosts.forEach(ghost => clearInterval(ghost.timerId))
-//         //     // ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
-
-//         //     //change each of the four ghosts to isScared
-//         //     console.log('Scared')
-//         //     ghosts.forEach(ghost => ghost.isScared = true)
-//         //     ghosts.forEach(ghost => squares[ghost.currentIndex].classList.add('scared-ghost'))
-//         //     ghosts.forEach(ghost => clearInterval(ghost.timerId))
-//         //     ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
-
-//         //     ghosts.forEach(ghost => ghost.savedSpeed = ghost.speed)
-//         //     timeout = setInterval(unScareGhosts, unScareTimer)
-
-//         //     ghosts.forEach(ghost => ghost.speed = ghost.slowSpeed)
-//         //     ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
-
-
-//         // }
-        
-//         // ghosts.forEach(ghost => ghost.speed = ghost.slowSpeed)
-//         // ghosts.forEach(ghost => ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.slowSpeed, direction)}, ghost.slowSpeed))
-       
-
-//         //use setTimeout to unscare ghosts after certain amount of time
-//         // alreadyEaten = 1  
-//         powerEaten = 1
-
-//     }
-// }
-
-
-
-// function ghostEaten() {
-//     if ((squares[pacmanCurrentIndex].classList.contains('ghost') && 
-//         squares[pacmanCurrentIndex].classList.contains('scared-ghost')) ||
-//         (squares[ghost.currentIndex].classList.contains('ghost') && 
-//         squares[ghost.currentIndex].classList.contains('scared-ghost')) || 
-//         ((squares[pacmanPrevIndex].classList.contains('ghost') && 
-//         squares[pacmanPrevIndex].classList.contains('scared-ghost')) &&
-//         (squares[ghost.prevIndex].classList.contains('ghost') && 
-//         squares[ghost.prevIndex].classList.contains('scared-ghost')))) { //||
-//                 clearInterval(ghost.timerId)
-//                 ghost.prevIndex = 0
-//                 ghostPoints += 100
-//                 // console.log('1',ghostPoints)
-//                 score += ghostPoints
-//                 scoreDisplay.innerHTML = score
-//                 squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost')
-//                 ghost.currentIndex = ghost.startIndex
-//                 squares[ghost.currentIndex].classList.add(ghost.className, 'ghost')
-//                 ghost.isScared = false
-//                 startGhost(ghost)
-
-
-//     }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // pacmanCurrentIndex == ghost.prevIndex
 //ghost.currentIndex = pacmanPrevIndex
@@ -1822,9 +1686,63 @@ function checkForWin() {
 
 
 
+let touchstartX = 0
+let touchendX = 0
+let touchstartY = 0
+let touchendY = 0
 
+const slider = document.getElementById('slider')
 
+function handleGesture() {
+    let xDiff = Math.abs(touchendX - touchstartX)
+    let yDiff = Math.abs(touchendY - touchstartY)
 
+    if (xDiff > yDiff) {
+        if (touchendX < touchstartX) {
+            alert('swiped left!')
+            if (pacmanDirection != -1) {
+                pacmanDirection = -1
+                move()
+            }
+        }
+        if (touchendX > touchstartX) {
+            alert('swiped right!')
+            if (pacmanDirection != 1) {
+                pacmanDirection = 1
+                move()
+            }
+        }
+    }
+    else if (xDiff < yDiff) {
+        if (touchendY < touchstartY) {
+            alert('swiped up!') //might have these mixed up
+            if (pacmanDirection != -width) {
+                pacmanDirection = -width
+                move()
+            }
+        }
+        if (touchendY > touchstartY) {
+            alert('swiped down!') //might have these mixed up
+            if (pacmanDirection != width) {
+                pacmanDirection = width
+                move()
+            }
+        }
+    }
+
+}
+
+slider.addEventListener('touchstart', e => {
+    console.log('clicked')
+    touchstartX = e.changedTouches[0].screenX
+    touchstartY = e.changedTouches[0].screenY
+})
+
+slider.addEventListener('touchend', e => {
+    touchendX = e.changedTouches[0].screenX
+    touchendY = e.changedTouches[0].screenY
+    handleGesture()
+})
 
 
 

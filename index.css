@@ -312,3 +312,91 @@ p {
     background: url("https://media0.giphy.com/media/go3pCPP4899Jd3xb4p/giphy.gif?cid=ecf05e47mweyjpq4pcjuijko8c2n8yqcw5tiacckvy4a0o76&rid=giphy.gif&ct=g");
     margin: auto;
 }
+
+
+#slider {
+    background-color: black;
+    border: none;
+}
+
+
+/* #arrow-keys {
+    display: flex;
+    flex-wrap: wrap;
+    width: 90%;
+    height: 1%; */
+    /* background: white; */
+    /* margin: auto; */
+/* } */
+
+/* #arrow-keys div,
+#arrow-keys button {
+    width: 33.33%;
+    height: 0.3333%; 
+}
+
+#arrow-keys button {
+    background: black;
+    border: none;
+    cursor: default;
+}
+
+#arrow-keys div {
+    background: black;   
+}
+
+#arrow-keys button:hover,
+#arrow-keys button:focus {
+    transform: scale(1);
+}  */
+
+
+
+/* #up-btn, #down-btn, #left-btn, #right-btn {
+    display: none;
+} */
+
+/* @media (max-width: 600px) {
+    .container {
+        margin: 3vh auto;
+        height: 90vh;
+        width: 60vh;
+    }
+    
+    .pacman,
+    .power-pellet {
+        border-radius: 2vh;
+    }
+
+    .pac-dot {
+        border: 0.75vh solid black;
+        border-radius: 2vh;
+    }
+
+} */
+
+    /* #arrow-keys {
+        display: flex;
+        flex-wrap: wrap;
+        width: 90%;
+        height: 21%; */
+        /* background: white; */
+        /* margin: auto;
+    } */
+
+    /* #arrow-keys div,
+    #arrow-keys button {
+        width: 33.33%;
+        height: 33.33%; 
+    }
+
+    #arrow-keys button{
+        background: white;
+        cursor: pointer;
+    }
+
+    #arrow-keys div {
+        background: black;   
+    }
+
+} */
