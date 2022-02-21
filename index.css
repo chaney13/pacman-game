@@ -356,14 +356,19 @@ p {
     display: none;
 } */
 
-/* @media (max-width: 600px) {
+@media (max-width: 600px) {
     .container {
         margin: 3vh auto;
         height: 90vh;
-        width: 60vh;
+        width: 100vw;
+        /* border: solid 1px red; */
     }
-    
-    .pacman,
+
+    /* h1 {
+        font-size: 3vh;
+    }
+     */
+    /* .pacman,
     .power-pellet {
         border-radius: 2vh;
     }
@@ -371,9 +376,9 @@ p {
     .pac-dot {
         border: 0.75vh solid black;
         border-radius: 2vh;
-    }
+    } */
 
-} */
+}
 
     /* #arrow-keys {
         display: flex;

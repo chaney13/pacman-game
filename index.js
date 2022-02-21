@@ -705,6 +705,66 @@ let pacmanCurrentIndex = 490
 squares[pacmanCurrentIndex].classList.add('pacman')
 
 
+let screen = document.querySelector('.screen')
+let hammerjsOptions = {};
+let hammertime = new Hammer(screen, hammerjsOptions);
+
+let hammertimeBodyRight = new Hammer.Manager(screen, {
+    recognizers: [
+        [Hammer.Swipe, { direction: Hammer.DIRECTION_RIGHT}]
+    ]
+});
+
+hammertimeBodyRight.on("swipe", function (ev) {
+    ev.keyCode = 39
+    control(ev)
+
+});
+
+let hammertimeBodyLeft = new Hammer.Manager(screen, {
+    recognizers: [
+        [Hammer.Swipe, { direction: Hammer.DIRECTION_LEFT}]
+    ]
+});
+
+hammertimeBodyLeft.on("swipe", function (ev) {
+    ev.keyCode = 37
+    control(ev)
+
+});
+
+let hammertimeBodyUp = new Hammer.Manager(screen, {
+    recognizers: [
+        [Hammer.Swipe, { direction: Hammer.DIRECTION_UP}]
+    ]
+});
+
+hammertimeBodyUp.on("swipe", function (ev) {
+    ev.keyCode = 38
+    control(ev)
+
+});
+
+let hammertimeBodyDown = new Hammer.Manager(screen, {
+    recognizers: [
+        [Hammer.Swipe, { direction: Hammer.DIRECTION_DOWN}]
+    ]
+});
+
+hammertimeBodyDown.on("swipe", function (ev) {
+    ev.keyCode = 40
+    control(ev)
+
+});
+
+
+
+
+
+
+
+
+
 function control(e) {
     squares[pacmanCurrentIndex].classList.remove('pacman')
 
