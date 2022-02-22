@@ -8,6 +8,7 @@ html, body {
     font-family: 'Press Start 2P', cursive;
     height: 1vh;
     overscroll-behavior: none;
+    /* overscroll-behavior-y: contain; */
 }
 
 

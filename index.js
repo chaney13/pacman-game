@@ -766,8 +766,8 @@ squares[pacmanCurrentIndex].classList.add('pacman')
 
 function swiping() {
 
-document.addEventListener('touchstart', handleTouchStart, false);        
-document.addEventListener('touchmove', handleTouchMove, false);
+document.addEventListener('touchstart', handleTouchStart, {passive:false});        
+document.addEventListener('touchmove', handleTouchMove, {passive:false});
 
 var xDown = null;                                                        
 var yDown = null;
@@ -839,25 +839,25 @@ function control(e) {
 
         //Version 2
         switch(e.keyCode) {
-            case 40:
+            case 40: //case 83:
             // console.log('pressed down')
             pacmanDirection = width
             move()
             break
 
-            case 38:
+            case 38: //case 87:
             // console.log('pressed up')
             pacmanDirection = -width
             move()
             break
 
-            case 37: 
+            case 37: //case 65:
             // console.log('pressed left')
             pacmanDirection = -1
             move()
             break
 
-            case 39:
+            case 39: //case 68:
             // console.log('pressed right')
             pacmanDirection = 1
             move()
