@@ -13,6 +13,7 @@ html, body {
 
 
 button {
+    color: black;
     font-size: 2.5vh;
     padding: 1.5vh 2.5vh;
     /* padding: 10px 25px; */
@@ -378,6 +379,11 @@ p {
 
     h1 {
         font-size: 7vw;
+    }
+
+    button:hover,
+    button:focus {
+        transform: scale(1);
     }
     
     /* .pacman,
