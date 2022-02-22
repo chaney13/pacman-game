@@ -364,23 +364,30 @@ p {
 @media (max-width: 600px) {
     .container {
         margin: 3vh auto;
-        height: 90vh;
+        height: 75vh;
         width: 100vw;
         /* border: solid 1px red; */
     }
 
-    /* h1 {
-        font-size: 3vh;
+    #box-loss, #box-win {
+        display: flex;
+        width: 95.45%;
+        height: 64%;
+        margin: 0;
     }
-     */
+
+    h1 {
+        font-size: 7vw;
+    }
+    
     /* .pacman,
     .power-pellet {
         border-radius: 2vh;
-    }
+    } */
 
-    .pac-dot {
+    /* .pac-dot {
         border: 0.75vh solid black;
-        border-radius: 2vh;
+        border-radius: 5vh;
     } */
 
 }

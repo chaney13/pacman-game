@@ -414,6 +414,7 @@ startBtn.addEventListener('click', function() {
 
 
     lastEvent = NaN
+    swiping()
 
     messageDisplay.innerHTML = ""
     score = 0
@@ -588,6 +589,7 @@ restartBtn.addEventListener('click', function() {
     ghosts.forEach(ghost => clearInterval(ghost.constantTimer))
 
     lastEvent = NaN
+    swiping()
 
     messageDisplay.innerHTML = ""
     score = 0
@@ -762,7 +764,7 @@ squares[pacmanCurrentIndex].classList.add('pacman')
 // });
 
 
-
+function swiping() {
 
 document.addEventListener('touchstart', handleTouchStart, false);        
 document.addEventListener('touchmove', handleTouchMove, false);
@@ -820,7 +822,8 @@ function handleTouchMove(ev) {
     /* reset values */
     xDown = null;
     yDown = null;                                             
-};
+}
+}
 
 
 

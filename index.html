@@ -1,5 +1,6 @@
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
         <link rel="stylesheet" href="index.css">
@@ -10,7 +11,9 @@
     <body>
         <div class="screen">
             <div class="container">
-                <h1>P A C - M A N</h1>
+                <div class='cols'>
+                    <h1>P A C - M A N</h1>
+                </div>
                 <!-- <div class="container"> -->
                     <div class='cols'>
                         <div class='left-col'>
@@ -31,14 +34,6 @@
                         <div class="hidden" id="box-win"></div>
                     </div>
 
-
-                    <!-- <div class="row">
-                        <h3><span id="count-down">A</span></h3>
-                        <h3><span id="message"></span></h3>
-                        <h3><span id="count-down">A</span></h3>
-                    </div> -->
-
-
                     <div class='cols'>
                         <div class='left-col'>
                             <!-- <p><span id="score">00</span></p> -->
@@ -49,7 +44,10 @@
                         </div>
                     </div>
 
-                    <h3><span id="message"></span></h3>
+                    <!-- <h3><span id="message"></span></h3> -->
+                    <div class='cols'>
+                        <h1 id="message"></h1>
+                    </div>
                     <button class="active" id="start-btn">START!</button>
                     <button class="hidden" id="restart-btn">RESTART</button>
                     <!-- <input id="slider"> -->
@@ -83,7 +81,6 @@
             </div>
         </div>
         
-        <script src="hammer.min.js"></script>
         <script src="index.js"></script>
     </body>
 </html>
