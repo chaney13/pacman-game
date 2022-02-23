@@ -33,9 +33,9 @@ button:focus {
 
 
 .screen {
-    height: auto;
-    /* height: 100%;
-    width: 100%; */
+    /* height: auto; */
+    height: 100%;
+    width: 100%;
     position: relative;
     /* border: lime solid 2px; */
 }
