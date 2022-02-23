@@ -69,6 +69,8 @@ let rewardedPoints = 0
 
 let gif = 0
 
+let color = 'navy'
+
 // const arrowKeys = document.getElementById('arrow-keys')
 // const upBtn = document.getElementById('up-btn')
 // const leftBtn = document.getElementById('left-btn')
@@ -332,6 +334,59 @@ function createBoard() {
 }
 createBoard()
 
+
+
+
+function changeBoardColor() {
+    for (let j = 0; j < borderArr.length; j++) {
+        let elements = document.getElementsByClassName(borderArr[j]) // get all elements
+	    for (let i = 0; i < elements.length; i++){
+		    elements[i].style.borderColor = color
+	    }
+    }
+}
+
+let borderArr = ['border-top', 'border-right', 'border-bottom', 'border-left',
+                'border-top-right', 'border-bottom-right', 'border-top-left', 'border-bottom-left', 'border-top-bottom', 'border-left-right',
+                'border-top-right-bottom', 'border-right-bottom-left', 'border-bottom-left-top', 'border-left-top-right']
+
+const redBtn = document.getElementById('red-btn')
+redBtn.addEventListener('click', function() {
+    color = 'red'
+    changeBoardColor()  
+})
+const orangeBtn = document.getElementById('orange-btn')
+orangeBtn.addEventListener('click', function() {
+    color = 'orange'
+    changeBoardColor()  
+})
+const greenBtn = document.getElementById('green-btn')
+greenBtn.addEventListener('click', function() {
+    color = 'green'
+    changeBoardColor()  
+})
+const navyBtn = document.getElementById('navy-btn')
+navyBtn.addEventListener('click', function() {
+    color = 'navy'
+    changeBoardColor()  
+})
+const purpleBtn = document.getElementById('purple-btn')
+purpleBtn.addEventListener('click', function() {
+    color = 'purple'
+    changeBoardColor()  
+})
+const pinkBtn = document.getElementById('pink-btn')
+pinkBtn.addEventListener('click', function() {
+    color = 'hotpink'
+    changeBoardColor()  
+})
+
+
+
+
+
+
+
 let pelletArray = []
 let fruitRandomIndex = 0
 function makeFruitRandom() {
@@ -372,6 +427,7 @@ function fruitEaten() {
         grid.innerHTML = ''
         squares = []
         createBoard()
+        changeBoardColor()
         score += fruitBoardPoints //100
         scoreDisplay.innerHTML = score
         // clearInterval(fruitBoard)
@@ -405,6 +461,20 @@ startBtn.addEventListener('click', function() {
     startBtn.classList.add('hidden')
     restartBtn.classList.remove('hidden')
     restartBtn.classList.add('active')
+    redBtn.classList.remove('active')
+    redBtn.classList.add('hidden')
+    orangeBtn.classList.remove('active')
+    orangeBtn.classList.add('hidden')
+    greenBtn.classList.remove('active')
+    greenBtn.classList.add('hidden')
+    navyBtn.classList.remove('active')
+    navyBtn.classList.add('hidden')
+    purpleBtn.classList.remove('active')
+    purpleBtn.classList.add('hidden')
+    pinkBtn.classList.remove('active')
+    pinkBtn.classList.add('hidden')
+    messageDisplay.classList.remove('active')
+    messageDisplay.classList.add('hidden')
 
     // arrowKeys.classList.remove('hidden')
     // arrowKeys.classList.add('active-arrow-keys')
@@ -441,6 +511,7 @@ startBtn.addEventListener('click', function() {
     grid.innerHTML = ''
     squares = []
     createBoard()
+    changeBoardColor()
 
     makeFruitBoard()
     makeFruitRandom()
@@ -488,66 +559,6 @@ function speedUp(ghost, direction) {
     }
 }
 
-// function speedUpTimer(ghost, ghostSpeed, direction) {
-//     if (gameOver === 1) {
-//         clearInterval(ghost.constantTimer)
-//         clearInterval(ghost.timerId)
-//         // console.log('A')
-//     }
-//     else if (ghost.isScared) {
-//         clearInterval(ghost.constantTimer)
-//         // console.log('B')
-//     }
-//     else {
-//         clearInterval(ghost.timerId)
-//         clearInterval(ghost.constantTimer)
-//         ghost.speed = ghostSpeed*speedChange
-//         speedUp(ghost)
-//         direction = ghost.savedDirection
-//         ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.speed, direction)}, ghost.speed)
-//         // console.log(ghost.className, ghost.speed)
-//         // console.log('C')
-//     }
-
-// }
-
-
-
-// function speedUp(ghost) {
-//     // ghost.timerId = ghost.timerId*speedChange
-//     if (!ghost.isScared && gameOver === 0) {
-//         // clearInterval(ghost.constantTimer)
-//         // console.log('in speed up', ghost.speed)
-//         ghost.constantTimer = setInterval(function() {speedUpTimer(ghost, ghost.speed, direction)}, constantIncrease)
-//     }
-//     else if (gameOver === 1) {
-//         clearInterval(ghost.constantTimer)
-//         clearInterval(ghost.timerId)
-//     }
-// }
-
-// function speedUpTimer(ghost, ghostSpeed, direction) {
-//     if (gameOver === 1) {
-//         clearInterval(ghost.constantTimer)
-//         clearInterval(ghost.timerId)
-//         // console.log('A')
-//     }
-//     else if (ghost.isScared) {
-//         clearInterval(ghost.constantTimer)
-//         // console.log('B')
-//     }
-//     else {
-//         clearInterval(ghost.timerId)
-//         clearInterval(ghost.constantTimer)
-//         ghost.speed = ghostSpeed*speedChange
-//         speedUp(ghost)
-//         direction = ghost.savedDirection
-//         ghost.timerId = setInterval(function() {ghostMovement(ghost, ghost.speed, direction)}, ghost.speed)
-//         // console.log(ghost.className, ghost.speed)
-//         // console.log('C')
-//     }
-
-// }
 
 restartBtn.addEventListener('click', function() {
     gameOver = 1
@@ -616,6 +627,7 @@ restartBtn.addEventListener('click', function() {
     grid.innerHTML = ''
     squares = []
     createBoard()
+    changeBoardColor()
 
     makeFruitBoard()
     makeFruitRandom()
@@ -635,59 +647,6 @@ restartBtn.addEventListener('click', function() {
 
     document.addEventListener('keydown', control)
 
-
-
-
-
-    // lastEvent = NaN
-
-    // messageDisplay.innerHTML = ""
-    // score = 0
-    // scoreDisplay.innerHTML = '00'
-    // squares[pacmanCurrentIndex].classList.remove('pacman')
-    // ghosts.forEach(ghost => {
-    //     squares[ghost.currentIndex].classList.remove(ghost.className)
-    //     squares[ghost.currentIndex].classList.remove('ghost')
-    //     if (ghost.isScared) {
-    //         squares[ghost.currentIndex].classList.remove('scared-ghost')
-    //     }
-    //     clearInterval(ghost.constantTimer)
-    //     clearInterval(ghost.timerId)
-    // })
-    // direction = -width
-
-    // for (let i = 0; i < ghostStartSpeeds.length; i++) {
-    //     ghosts[i].speed = ghostStartSpeeds[i]
-    //     // console.log('restarted speeds', ghosts[i].speed)
-    // }
-    // // console.log('restarted')
-    // clearInterval(timer)
-    // clearTimeout(fruitBoard)
-    // clearTimeout(fruitRandom)
-    // //remove old classes
-    // grid.innerHTML = ''
-    // squares = []
-    // createBoard()
-
-    // makeFruitBoard()
-    // makeFruitRandom()
-
-    // gameOver = 0
-    // start = 1
-    // powerEaten = 0
-    // pacmanCurrentIndex = 490
-    // squares[pacmanCurrentIndex].classList.add('pacman')
-    // ghosts.forEach(ghost => {
-    //     ghost.currentIndex = ghost.startIndex
-    //     squares[ghost.currentIndex].classList.add(ghost.className)
-    //     squares[ghost.currentIndex].classList.add('ghost')
-    // })
-
-    // ghosts.forEach(ghost => startGhost(ghost))
-
-    // ghosts.forEach(ghost => speedUp(ghost, direction))
-
-    // document.addEventListener('keydown', control)
 })
 
 
@@ -706,123 +665,65 @@ restartBtn.addEventListener('click', function() {
 let pacmanCurrentIndex = 490
 squares[pacmanCurrentIndex].classList.add('pacman')
 
-
-// let screen = document.querySelector('.screen')
-// let hammerjsOptions = {};
-// let hammertime = new Hammer(screen, hammerjsOptions);
-
-// let hammertimeBodyRight = new Hammer.Manager(screen, {
-//     recognizers: [
-//         [Hammer.Swipe, { direction: Hammer.DIRECTION_RIGHT}]
-//     ]
-// });
-
-// hammertimeBodyRight.on("swipe", function (ev) {
-//     console.log('RIGHT')
-//     ev.keyCode = 39
-//     control(ev)
-
-// });
-
-// let hammertimeBodyLeft = new Hammer.Manager(screen, {
-//     recognizers: [
-//         [Hammer.Swipe, { direction: Hammer.DIRECTION_LEFT}]
-//     ]
-// });
-
-// hammertimeBodyLeft.on("swipe", function (ev) {
-//     console.log('LEFT')
-//     ev.keyCode = 37
-//     control(ev)
-
-// });
-
-// let hammertimeBodyUp = new Hammer.Manager(screen, {
-//     recognizers: [
-//         [Hammer.Swipe, { direction: Hammer.DIRECTION_UP}]
-//     ]
-// });
-
-// hammertimeBodyUp.on("swipe", function (ev) {
-//     console.log('UP')
-//     ev.keyCode = 38
-//     control(ev)
-
-// });
-
-// let hammertimeBodyDown = new Hammer.Manager(screen, {
-//     recognizers: [
-//         [Hammer.Swipe, { direction: Hammer.DIRECTION_DOWN}]
-//     ]
-// });
-
-// hammertimeBodyDown.on("swipe", function (ev) {
-//     console.log('DOWN')
-//     ev.keyCode = 40
-//     control(ev)
-
-// });
-
-
 function swiping() {
 
-document.addEventListener('touchstart', handleTouchStart, {passive:false});        
-document.addEventListener('touchmove', handleTouchMove, {passive:false});
-
-var xDown = null;                                                        
-var yDown = null;
-
-function getTouches(ev) {
-  return ev.touches ||             // browser API
-         ev.originalEvent.touches; // jQuery
-}                                                     
-
-function handleTouchStart(ev) {
-    const firstTouch = getTouches(ev)[0];                                      
-    xDown = firstTouch.clientX;                                      
-    yDown = firstTouch.clientY;                                      
-};                                                
-
-function handleTouchMove(ev) {
-    if ( ! xDown || ! yDown ) {
-        return;
-    }
-
-    var xUp = ev.touches[0].clientX;                                    
-    var yUp = ev.touches[0].clientY;
-
-    var xDiff = xDown - xUp;
-    var yDiff = yDown - yUp;
-
-    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
-        if ( xDiff > 0 ) {
-            /* left swipe */ 
-            // console.log('LEFT SWIPE')
-            ev.keyCode = 37
-            control(ev)
+    document.addEventListener('touchstart', handleTouchStart, {passive:false});        
+    document.addEventListener('touchmove', handleTouchMove, {passive:false});
+    
+    var xDown = null;                                                        
+    var yDown = null;
+    
+    function getTouches(ev) {
+      return ev.touches ||             // browser API
+             ev.originalEvent.touches; // jQuery
+    }                                                     
+    
+    function handleTouchStart(ev) {
+        const firstTouch = getTouches(ev)[0];                                      
+        xDown = firstTouch.clientX;                                      
+        yDown = firstTouch.clientY;                                      
+    };                                                
+    
+    function handleTouchMove(ev) {
+        if ( ! xDown || ! yDown ) {
+            return;
+        }
+    
+        var xUp = ev.touches[0].clientX;                                    
+        var yUp = ev.touches[0].clientY;
+    
+        var xDiff = xDown - xUp;
+        var yDiff = yDown - yUp;
+    
+        if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+            if ( xDiff > 0 ) {
+                /* left swipe */ 
+                // console.log('LEFT SWIPE')
+                ev.keyCode = 37
+                control(ev)
+            } else {
+                /* right swipe */
+                // console.log('RIGHT SWIPE')
+                ev.keyCode = 39
+                control(ev)
+            }                       
         } else {
-            /* right swipe */
-            // console.log('RIGHT SWIPE')
-            ev.keyCode = 39
-            control(ev)
-        }                       
-    } else {
-        if ( yDiff > 0 ) {
-            /* up swipe */ 
-            // console.log('UP SWIPE')
-            ev.keyCode = 38
-             control(ev)
-        } else { 
-            /* down swipe */
-            // console.log('DOWN SWIPE')
-            ev.keyCode = 40
-            control(ev)
-        }                                                                 
+            if ( yDiff > 0 ) {
+                /* up swipe */ 
+                // console.log('UP SWIPE')
+                ev.keyCode = 38
+                 control(ev)
+            } else { 
+                /* down swipe */
+                // console.log('DOWN SWIPE')
+                ev.keyCode = 40
+                control(ev)
+            }                                                                 
+        }
+        /* reset values */
+        xDown = null;
+        yDown = null;                                             
     }
-    /* reset values */
-    xDown = null;
-    yDown = null;                                             
-}
 }
 
 
@@ -1154,190 +1055,6 @@ function ghostEaten() {
         } 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function ghostEaten() {
-//     if ((squares[pacmanCurrentIndex].classList.contains('ghost') && 
-//         squares[pacmanCurrentIndex].classList.contains('scared-ghost'))) { //||
-//         // pacmanPrevIndex == ghosts[j].prevIndex) {
-
-//             for (let j = 0; j < ghosts.length; j++) {
-//                 if (ghosts[j].currentIndex == pacmanCurrentIndex) {
-//                     clearInterval(ghosts[j].timerId)
-//                     ghosts[j].prevIndex = 0
-//                     ghostPoints += 100
-//                     // console.log('1',ghostPoints)
-//                     score += ghostPoints
-//                     scoreDisplay.innerHTML = score
-//                     rewardedPoints = 1
-
-//                     squares[ghosts[j].currentIndex].classList.remove(ghosts[j].className, 'ghost', 'scared-ghost')
-//                     ghosts[j].currentIndex = ghosts[j].startIndex
-//                     squares[ghosts[j].currentIndex].classList.add(ghosts[j].className, 'ghost')
-//                     ghosts[j].isScared = false
-//                     startGhost(ghosts[j])
-
-
-//                     // for (let i = 0; i < ghosts.length; i++) {
-//                     //     if (ghosts[i].currentIndex == pacmanCurrentIndex) {
-//                     //         squares[ghosts[i].currentIndex].classList.remove(ghosts[i].className, 'ghost', 'scared-ghost')
-//                     //         ghosts[i].currentIndex = ghosts[i].startIndex
-//                     //         squares[ghosts[i].currentIndex].classList.add(ghosts[i].className, 'ghost')
-//                     //         ghosts[i].isScared = false
-//                     //         clearInterval(ghosts[i].timerId)
-//                     //         startGhost(ghosts[i])
-                        
-//                     //     }
-//                     // }
-//                 }
-//             }
-            
-//     }
-
-//     else if ((squares[pacmanPrevIndex].classList.contains('ghost') && 
-//             squares[pacmanPrevIndex].classList.contains('scared-ghost'))) { //||
-//         // pacmanPrevIndex == ghosts[j].prevIndex) {
-
-//             for (let j = 0; j < ghosts.length; j++) {
-//                 if (ghosts[j].prevIndex == pacmanPrevIndex) {
-//                     clearInterval(ghosts[j].timerId)
-//                     ghosts[j].prevIndex = 0
-//                     ghostPoints += 100
-//                     // console.log('1',ghostPoints)
-//                     score += ghostPoints
-//                     scoreDisplay.innerHTML = score
-//                     rewardedPoints = 1
-
-//                     squares[ghosts[j].currentIndex].classList.remove(ghosts[j].className, 'ghost', 'scared-ghost')
-//                     ghosts[j].currentIndex = ghosts[j].startIndex
-//                     squares[ghosts[j].currentIndex].classList.add(ghosts[j].className, 'ghost')
-//                     ghosts[j].isScared = false
-//                     startGhost(ghosts[j])
-
-
-//                     // for (let i = 0; i < ghosts.length; i++) {
-//                     //     if (ghosts[i].currentIndex == pacmanCurrentIndex) {
-//                     //         squares[ghosts[i].currentIndex].classList.remove(ghosts[i].className, 'ghost', 'scared-ghost')
-//                     //         ghosts[i].currentIndex = ghosts[i].startIndex
-//                     //         squares[ghosts[i].currentIndex].classList.add(ghosts[i].className, 'ghost')
-//                     //         ghosts[i].isScared = false
-//                     //         clearInterval(ghosts[i].timerId)
-//                     //         startGhost(ghosts[i])
-                        
-//                     //     }
-//                     // }
-//                 }
-//             }
-            
-//     }
-
-//     // for (let j = 0; j < ghosts.length; j++) {
-//     //     if ((pacmanPrevIndex == ghosts[j].prevIndex) && rewardedPoints == 0 && isScared) {
-//     //         clearInterval(ghosts[j].timerId)
-//     //         ghosts[j].prevIndex = 0
-//     //         ghostPoints += 100
-//     //         // console.log('2',ghostPoints)
-//     //         score += ghostPoints
-//     //         scoreDisplay.innerHTML = score
-
-//     //         squares[ghosts[j].currentIndex].classList.remove(ghosts[j].className, 'ghost', 'scared-ghost')
-//     //         ghosts[j].currentIndex = ghosts[j].startIndex
-//     //         squares[ghosts[j].currentIndex].classList.add(ghosts[j].className, 'ghost')
-//     //         ghosts[j].isScared = false
-//     //         startGhost(ghosts[j])
-
-//     //         // for (let i = 0; i < ghosts.length; i++) {
-//     //         //     if (ghosts[i].currentIndex == pacmanCurrentIndex) {
-//     //         //         squares[ghosts[i].currentIndex].classList.remove(ghosts[i].className, 'ghost', 'scared-ghost')
-//     //         //         ghosts[i].currentIndex = ghosts[i].startIndex
-//     //         //         squares[ghosts[i].currentIndex].classList.add(ghosts[i].className, 'ghost')
-//     //         //         ghosts[i].isScared = false
-//     //         //         clearInterval(ghosts[i].timerId)
-//     //         //         startGhost(ghosts[i])
-                
-//     //         //     }
-//     //         // }
-
-//     //     }
-//     // } 
-//     rewardedPoints = 0  
-// }
-
-
-
-
-
-
-// function pacmanCaught(ghost) {
-//     if (squares[ghost.currentIndex].classList.contains('pacman') && 
-//         !squares[ghost.currentIndex].classList.contains('scared-ghost')) {
-
-//             ghosts.forEach(ghost => clearInterval(ghost.timerId))
-
-//             direction = 0
-//             gameOver = 1
-
-//             if (score > highscore) {
-//                 highscore = score
-//                 highscoreDisplay.innerHTML = highscore
-//             }
-
-//             clearInterval(fruit)
-//             savedGrid = grid.innerHTML
-//             // savedSquares = squares
-//             grid.innerHTML = ''
-//             grid.classList.add('hidden')
-//             savedSquares = squares
-//             squares = []
-//             boxLoss.style.display = "block"
-//             let gif = setInterval(function() {
-//                 boxLoss.style.display = "none"
-//                 // squares = savedSquares
-//                 grid.innerHTML = savedGrid
-//                 grid.classList.remove('hidden')
-//                 // grid.classList.add('active')
-//                 squares = savedSquares
-//                 savedSquares = []
-//                 clearInterval(gif)
-//             }, 3500)
-
-//             fruitPoints = 0
-
-//             //remove eventlistener from our control function
-//             document.removeEventListener('keydown', control)
-//             //tell user the game is over   
-//             messageDisplay.innerHTML = 'YOU LOST'
-//             clearInterval(timer)
-//             // clearInterval(constantTimer)
-
-//             // startBtn.classList.remove('active')
-//             // startBtn.classList.add('hidden')
-//             restartBtn.classList.remove('hidden')
-//             restartBtn.classList.add('active')
-//             start = 0
-//     }
-// }
 
 function unScareGhosts() {
     if (gameOver === 1) {
@@ -1696,6 +1413,18 @@ function checkForGameOver() {
                         // restartBtn.classList.add('hidden')
                         startBtn.classList.remove('hidden')
                         startBtn.classList.add('active')
+                        redBtn.classList.remove('hidden')
+                        redBtn.classList.add('active')
+                        orangeBtn.classList.remove('hidden')
+                        orangeBtn.classList.add('active')
+                        greenBtn.classList.remove('hidden')
+                        greenBtn.classList.add('active')
+                        navyBtn.classList.remove('hidden')
+                        navyBtn.classList.add('active')
+                        purpleBtn.classList.remove('hidden')
+                        purpleBtn.classList.add('active')
+                        pinkBtn.classList.remove('hidden')
+                        pinkBtn.classList.add('active')
                     }, 3500)
 
                     // fruitBoardPoints = 50
@@ -1703,7 +1432,9 @@ function checkForGameOver() {
 
                     //remove eventlistener from our control function
                     document.removeEventListener('keydown', control)
-                    //tell user the game is over   
+                    //tell user the game is over  
+                    messageDisplay.classList.add('active')
+                    messageDisplay.classList.remove('hidden') 
                     messageDisplay.innerHTML = 'YOU LOST'
                     clearInterval(timer)
                     clearTimeout(fruitBoard)
@@ -1741,6 +1472,8 @@ function checkForWin() {
         countdownTimer2.classList.remove('active')
         countdownTimer.classList.add('hidden')
         countdownTimer2.classList.add('hidden')
+        messageDisplay.classList.add('active')
+        messageDisplay.classList.remove('hidden')
 
         direction = 0
         powerEaten = 0
@@ -1781,6 +1514,18 @@ function checkForWin() {
             // restartBtn.classList.add('hidden')
             startBtn.classList.remove('hidden')
             startBtn.classList.add('active')
+            redBtn.classList.remove('hidden')
+            redBtn.classList.add('active')
+            orangeBtn.classList.remove('hidden')
+            orangeBtn.classList.add('active')
+            greenBtn.classList.remove('hidden')
+            greenBtn.classList.add('active')
+            navyBtn.classList.remove('hidden')
+            navyBtn.classList.add('active')
+            purpleBtn.classList.remove('hidden')
+            purpleBtn.classList.add('active')
+            pinkBtn.classList.remove('hidden')
+            pinkBtn.classList.add('active')
         }, 3500)
 
         // fruitBoardPoints = 50
@@ -1804,72 +1549,6 @@ function checkForWin() {
         lastEvent = 0
     }
 }
-
-
-
-
-
-
-
-// let touchstartX = 0
-// let touchendX = 0
-// let touchstartY = 0
-// let touchendY = 0
-
-// const slider = document.getElementById('slider')
-
-// function handleGesture() {
-//     let xDiff = Math.abs(touchendX - touchstartX)
-//     let yDiff = Math.abs(touchendY - touchstartY)
-
-//     if (xDiff > yDiff) {
-//         if (touchendX < touchstartX) {
-//             alert('swiped left!')
-//             if (pacmanDirection != -1) {
-//                 pacmanDirection = -1
-//                 move()
-//             }
-//         }
-//         if (touchendX > touchstartX) {
-//             alert('swiped right!')
-//             if (pacmanDirection != 1) {
-//                 pacmanDirection = 1
-//                 move()
-//             }
-//         }
-//     }
-//     else if (xDiff < yDiff) {
-//         if (touchendY < touchstartY) {
-//             alert('swiped up!') //might have these mixed up
-//             if (pacmanDirection != -width) {
-//                 pacmanDirection = -width
-//                 move()
-//             }
-//         }
-//         if (touchendY > touchstartY) {
-//             alert('swiped down!') //might have these mixed up
-//             if (pacmanDirection != width) {
-//                 pacmanDirection = width
-//                 move()
-//             }
-//         }
-//     }
-
-// }
-
-// slider.addEventListener('touchstart', e => {
-//     console.log('clicked')
-//     touchstartX = e.changedTouches[0].screenX
-//     touchstartY = e.changedTouches[0].screenY
-// })
-
-// slider.addEventListener('touchend', e => {
-//     touchendX = e.changedTouches[0].screenX
-//     touchendY = e.changedTouches[0].screenY
-//     handleGesture()
-// })
-
-
 
 
 
@@ -1914,418 +1593,3 @@ function checkForWin() {
 // // ]
 
 
-
-
-
-
-
-
-
-
-// html, body {
-//     margin: 0;
-//     padding: 0;
-//     text-align: center;
-//     background: black;
-//     font-family: 'Press Start 2P', cursive;
-//     height: 1vh;
-// }
-
-// button {
-//     font-size: 2.5vh;
-//     padding: 1.5vh 2.5vh;
-//     /* padding: 10px 25px; */
-//     transform: scale(1);
-//     transition: transform 250ms;
-//     cursor: pointer;
-// }
-
-// button:hover,
-// button:focus {
-//     transform: scale(1.2);
-// }
-
-
-
-
-
-
-// .screen {
-//     height: auto;
-//     /* padding-bottom: 56.25%; 16:9 */
-//     position: relative;
-//     /* border: lime solid 2px; */
-// }
-
-// .container {
-//     margin: 3vh auto;
-//     /* border: hotpink 2px solid; */
-//     /* margin-top: 5%;
-//     margin-bottom: 5%; */
-//     height: 90vh;
-//     width: 60vh;
-//     /* width: 440px; */
-
-//     /* position: absolute;
-//     top: 0; left: 0;
-//     width: 100%; 
-//     height: 100%; */
-// }
-
-// .cols {
-//     display: flex;
-//     justify-content: space-between;
-//     /* border: 1px solid purple; */
-// }
-
-// .left-col {
-//     /* border: lime 2px solid; */
-//     margin-left: 5%;
-//     /* margin-left: 22px; */
-// }
-// .right-col {
-//     /* border: hotpink 2px solid; */
-//     margin-right: 5%;
-//     /* margin-right: 22px; */
-// }
-
-// h1 {
-//     width: 60vh;
-//     /* width: 440px; */
-//     /* padding-top: 20px; */
-//     margin: 0 auto;
-//     margin-bottom: 4vh;
-//     /* font-size: 32px; */
-//     font-size: 4.25vh;
-//     color: yellow;
-//     /* border: red solid 2px; */
-    
-// }
-
-// h3 {
-//     color: white;
-//     font-size: 20px;
-// }
-
-// p {
-//     margin-bottom: 0;
-//     color: white;
-//     margin: 0;
-//     font-size: 2.5vh;
-//     /* border: 2px solid aqua; */
-//     /* font-size: 20px; */
-// }
-
-// /* .top { */
-//     /* margin-top: 35px; */
-//     /* border: 2px solid orange; */
-// /* } */
-
-// .cols {
-//     display: flex;
-//     flex-direction: row;
-// }
-
-// .grid {
-//     display: flex;
-//     flex-wrap: wrap;
-//     width: 95.45%;
-//     height: 64%;
-//     /* width: 420px; */
-//     /* height: 420px; */
-//     /* border: solid red 2px; */
-//     background: black;
-//     margin: auto;
-// }
-
-// .grid div {
-//     width: 3.57%;
-//     height: 3.57%; 
-//     /* width: 15px;
-//     height: 15px;    */
-// }
-
-// .pac-dot {
-//     background-color: peachpuff;
-//     border: 0.75vh solid black;
-//     /* border: 5px solid black; */
-//     box-sizing: border-box;
-//     border-radius: 1vh;
-// }
-
-// .ghost-lair {
-//     background-color: black;
-// }
-
-// .wall {
-//     background-color: black; /* navy*/
-//     box-sizing: border-box;
-
-//     /* background-color: black;
-//     box-sizing: border-box;
-//     border: 3px solid navy; */
-// }
-
-// .border-top {
-//     border-top: 3px solid navy;
-// }
-// .border-right {
-//     border-right: 3px solid navy;
-// }
-// .border-bottom {
-//     border-bottom: 3px solid navy;
-// }
-// .border-left {
-//     border-left: 3px solid navy;
-// }
-// .border-top-right {
-//     border-top: 3px solid navy;
-//     border-right: 3px solid navy;
-// }
-// .border-bottom-right {
-//     border-bottom: 3px solid navy;
-//     border-right: 3px solid navy;
-// }
-// .border-top-left {
-//     border-top: 3px solid navy;
-//     border-left: 3px solid navy;
-// }
-// .border-bottom-left {
-//     border-bottom: 3px solid navy;
-//     border-left: 3px solid navy;
-// }
-// .border-top-bottom {
-//     border-top: 3px solid navy;
-//     border-bottom: 3px solid navy;
-//     padding: 0;
-// }
-// .border-left-right {
-//     border-left: 3px solid navy;
-//     border-right: 3px solid navy;
-// }
-// .border-top-right-bottom {
-//     border-top: 3px solid navy;
-//     border-right: 3px solid navy;
-//     border-bottom: 3px solid navy;
-// }
-// .border-right-bottom-left {
-//     border-right: 3px solid navy;
-//     border-bottom: 3px solid navy;
-//     border-left: 3px solid navy;
-// }
-// .border-bottom-left-top {
-//     border-bottom: 3px solid navy;
-//     border-left: 3px solid navy;
-//     border-top: 3px solid navy;
-// }
-// .border-left-top-right {
-//     border-left: 3px solid navy;
-//     border-top: 3px solid navy;
-//     border-right: 3px solid navy;
-// }
-
-
-
-// .power-pellet {
-//     background-color: peachpuff;
-//     border-radius: 1vh;
-//     /* border-radius: 7.5px; */
-//     border: none;
-//     /* border: 2.75px solid black;
-//     box-sizing: border-box; */
-
-    
-//     /* border-radius: 7.5px; */
-// }
-
-// .empty {
-//     background-color: black;
-// }
-
-// .pacman {
-//     background-color: yellow;
-//     border-radius: 1vh;
-//     /* border-radius: 7.5px; */
-//     border: none;
-// }
-
-// .blinky {
-//     background-color: red;
-//     border-radius: 80% 80% 0% 0%;
-//     border: none;
-// }
-
-// .pinky {
-//     background-color: pink;
-//     border-radius: 80% 80% 0% 0%;
-//     border: none;
-// }
-
-// .inky {
-//     background-color: aqua;
-//     border-radius: 80% 80% 0% 0%;
-//     border: none;
-// }
-
-// .clyde {
-//     background-color: orange;
-//     border-radius: 80% 80% 0% 0%;
-//     border: none;
-// }
-
-// .scared-ghost {
-//     background-color: blue;
-//     border: none;
-// }
-
-// .active {
-//     display: block;
-//     margin: auto;
-// }
-
-// .hidden {
-//     display: none;
-// }
-
-// #countdown-timer1,
-// #countdown-timer2 {
-//     color: white;
-// }
-
-// .countdown-timer {
-//     color: white;
-// }
-
-// .fruit-board {
-//     background-color: lime;
-//     border-radius: 1vh;
-//     /* border-radius: 7.5px; */
-//     border: none;
-// }
-
-// .fruit-random {
-//     background-color: magenta;
-//     border-radius: 1vh;
-//     /* border-radius: 7.5px; */
-//     border: none;
-// }
-
-// /* #box-initial {
-//     display: flex;
-//     flex-wrap: wrap;
-//     width: 420px;
-//     height: 420px;
-//     background: url("https://media2.giphy.com/media/jxJjBMvqEvMSA/giphy.gif?cid=ecf05e47e63bs3xaz0uslv2g8yc3cxr5noaq6v1r05vxno5h&rid=giphy.gif&ct=g");
-//     margin: auto;
-// } */
-
-// #box-loss {
-//     display: flex;
-//     flex-wrap: wrap;
-//     width: 420px;
-//     height: 420px;
-//     background: url("https://media1.giphy.com/media/hkqefnFjn2MWVl6xvq/giphy.gif?cid=ecf05e47e1q70lvjfkp0fycje1jz3xev0gpje69jf3zc8jdv&rid=giphy.gif&ct=g");
-//     margin: auto;
-// }
-
-// #box-win {
-//     display: flex;
-//     flex-wrap: wrap;
-//     width: 420px;
-//     height: 420px;
-//     background: url("https://media0.giphy.com/media/go3pCPP4899Jd3xb4p/giphy.gif?cid=ecf05e47mweyjpq4pcjuijko8c2n8yqcw5tiacckvy4a0o76&rid=giphy.gif&ct=g");
-//     margin: auto;
-// }
-
-
-// #slider {
-//     background-color: black;
-//     border: none;
-// }
-
-
-// /* #arrow-keys {
-//     display: flex;
-//     flex-wrap: wrap;
-//     width: 90%;
-//     height: 1%; */
-//     /* background: white; */
-//     /* margin: auto; */
-// /* } */
-
-// /* #arrow-keys div,
-// #arrow-keys button {
-//     width: 33.33%;
-//     height: 0.3333%; 
-// }
-
-// #arrow-keys button {
-//     background: black;
-//     border: none;
-//     cursor: default;
-// }
-
-// #arrow-keys div {
-//     background: black;   
-// }
-
-// #arrow-keys button:hover,
-// #arrow-keys button:focus {
-//     transform: scale(1);
-// }  */
-
-
-
-// /* #up-btn, #down-btn, #left-btn, #right-btn {
-//     display: none;
-// } */
-
-// @media (max-width: 600px) {
-//     .container {
-//         margin: 3vh auto;
-//         height: 90vh;
-//         width: 100vw;
-//         /* border: solid 1px red; */
-//     }
-
-//     /* h1 {
-//         font-size: 3vh;
-//     }
-//      */
-//     /* .pacman,
-//     .power-pellet {
-//         border-radius: 2vh;
-//     }
-
-//     .pac-dot {
-//         border: 0.75vh solid black;
-//         border-radius: 2vh;
-//     } */
-
-// }
-
-//     /* #arrow-keys {
-//         display: flex;
-//         flex-wrap: wrap;
-//         width: 90%;
-//         height: 21%; */
-//         /* background: white; */
-//         /* margin: auto;
-//     } */
-
-//     /* #arrow-keys div,
-//     #arrow-keys button {
-//         width: 33.33%;
-//         height: 33.33%; 
-//     }
-
-//     #arrow-keys button{
-//         background: white;
-//         cursor: pointer;
-//     }
-
-//     #arrow-keys div {
-//         background: black;   
-//     }
-
-// } */

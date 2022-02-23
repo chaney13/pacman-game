@@ -208,6 +208,75 @@ p {
 
 
 
+#red-btn,
+#orange-btn,
+#green-btn,
+#navy-btn,
+#purple-btn,
+#pink-btn {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transform: none;
+    margin-top: 3%;
+    margin-bottom: 5%;
+}
+
+#red-btn {
+    background-color: red;
+}
+#orange-btn {
+    background-color: orange;
+}
+#green-btn {
+    background-color: green;
+}
+#navy-btn {
+    background-color: navy;
+}
+#purple-btn {
+    background-color: purple;
+}
+#pink-btn {
+    background-color: hotpink;
+}
+
+
+#red-btn:hover,
+#red-btn:focus {
+    /* transform: scale(1.2); */
+    background: darkred;
+}
+#orange-btn:hover,
+#orange-btn:focus {
+    /* transform: scale(1.2); */
+    background: darkorange;
+}
+#green-btn:hover,
+#green-btn:focus {
+    /* transform: scale(1.2); */
+    background: darkgreen;
+}
+#navy-btn:hover,
+#navy-btn:focus {
+    /* transform: scale(1.2); */
+    background: darkblue;
+}
+#purple-btn:hover,
+#purple-btn:focus {
+    /* transform: scale(1.2); */
+    background: darkmagenta;
+}
+#pink-btn:hover,
+#pink-btn:focus {
+    /* transform: scale(1.2); */
+    background: palevioletred;
+}
+
+
 .power-pellet {
     background-color: peachpuff;
     border-radius: 1vh;
@@ -320,10 +389,10 @@ p {
 }
 
 
-#slider {
+/* #slider {
     background-color: black;
     border: none;
-}
+} */
 
 
 /* #arrow-keys {
