@@ -42,7 +42,7 @@ button:focus {
 
 .container {
     margin: 3vh auto;
-    border: hotpink 2px solid;
+    /* border: hotpink 2px solid; */
     /* margin-top: 5%;
     margin-bottom: 5%; */
     height: 90vh;
