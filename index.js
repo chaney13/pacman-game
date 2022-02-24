@@ -69,7 +69,7 @@ let rewardedPoints = 0
 
 let gif = 0
 
-let color = 'navy'
+let color = 'mediumblue'
 
 // const arrowKeys = document.getElementById('arrow-keys')
 // const upBtn = document.getElementById('up-btn')
@@ -352,12 +352,12 @@ let borderArr = ['border-top', 'border-right', 'border-bottom', 'border-left',
 
 const redBtn = document.getElementById('red-btn')
 redBtn.addEventListener('click', function() {
-    color = 'red'
+    color = 'crimson'
     changeBoardColor()  
 })
 const orangeBtn = document.getElementById('orange-btn')
 orangeBtn.addEventListener('click', function() {
-    color = 'orange'
+    color = 'darkorange'
     changeBoardColor()  
 })
 const greenBtn = document.getElementById('green-btn')
@@ -367,7 +367,7 @@ greenBtn.addEventListener('click', function() {
 })
 const navyBtn = document.getElementById('navy-btn')
 navyBtn.addEventListener('click', function() {
-    color = 'navy'
+    color = 'mediumblue'
     changeBoardColor()  
 })
 const purpleBtn = document.getElementById('purple-btn')
@@ -381,7 +381,7 @@ pinkBtn.addEventListener('click', function() {
     changeBoardColor()  
 })
 
-
+changeBoardColor()
 
 
 
@@ -669,32 +669,32 @@ function swiping() {
 
     document.addEventListener('touchstart', handleTouchStart, {passive:false});        
     document.addEventListener('touchmove', handleTouchMove, {passive:false});
-    
+
     var xDown = null;                                                        
     var yDown = null;
-    
+
     function getTouches(ev) {
       return ev.touches ||             // browser API
              ev.originalEvent.touches; // jQuery
     }                                                     
-    
+
     function handleTouchStart(ev) {
         const firstTouch = getTouches(ev)[0];                                      
         xDown = firstTouch.clientX;                                      
         yDown = firstTouch.clientY;                                      
     };                                                
-    
+
     function handleTouchMove(ev) {
         if ( ! xDown || ! yDown ) {
             return;
         }
-    
+
         var xUp = ev.touches[0].clientX;                                    
         var yUp = ev.touches[0].clientY;
-    
+
         var xDiff = xDown - xUp;
         var yDiff = yDown - yUp;
-    
+
         if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
             if ( xDiff > 0 ) {
                 /* left swipe */ 
